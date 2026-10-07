@@ -184,8 +184,7 @@ server/              el servidor: cuentas, chat, packs, túnel, mundos, actualiz
 
 ## 🙏 Gracias a
 
-- **[Minepanel](https://github.com/Ketbome/minepanel)** de Ketbome: la estética Minecraft de la interfaz, usada **con
-  permiso de su autor**.
+- **[Minepanel](https://github.com/Ketbome/minepanel)** de Ketbome: la estética Minecraft de la interfaz.
 - **[XMCL](https://github.com/Voxelum/minecraft-launcher-core-node)**: instala y arranca Minecraft.
 - **[Modrinth](https://modrinth.com)**: los mods, resource packs, shaders y modpacks.
 - **[skinview3d](https://github.com/bs-community/skinview3d)**, **[KLIPY](https://klipy.com)** (GIFs),
