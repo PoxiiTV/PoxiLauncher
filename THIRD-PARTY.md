@@ -20,8 +20,6 @@ adapted from Minepanel.
 - https://github.com/Ketbome/minepanel
 - Copyright (c) 2024-2026 Ketbome
 - Minepanel Community License (uso personal y no comercial / personal and non-commercial use)
-- PoxiLauncher la usa **con permiso de su autor** para publicarse con su interfaz (2026).
-  PoxiLauncher uses it **with its author's permission** to be published with its interface (2026).
 
 > Minepanel Community License
 >
