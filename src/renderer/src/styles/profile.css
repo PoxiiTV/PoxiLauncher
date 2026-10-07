@@ -1,0 +1,1083 @@
+/* ——— Perfil personalizable (estilo Discord) ——— */
+
+/* ——— Nombre: color o degradado, efecto y fuente ——— */
+.uname {
+  display: inline;
+}
+
+.uname.solid {
+  color: var(--n1);
+}
+
+.uname.grad {
+  background: linear-gradient(90deg, var(--n1), var(--n2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Efectos que pintan el texto con su propio degradado */
+.uname.fx-rainbow,
+.uname.fx-shine,
+.uname.fx-flow,
+.uname.fx-fire,
+.uname.fx-ice,
+.uname.fx-gold,
+.uname.fx-chrome,
+.uname.fx-holo {
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.uname.fx-glow {
+  text-shadow: 0 0 0.6em color-mix(in srgb, var(--n1) 70%, transparent);
+}
+
+.uname.grad.fx-glow {
+  filter: drop-shadow(0 0 0.35em color-mix(in srgb, var(--n1) 60%, transparent));
+  text-shadow: none;
+}
+
+/* En em: el brillo crece con la letra (en la lista de amigos no parece un recuadro) */
+.uname.fx-neon {
+  color: #fff;
+  -webkit-text-fill-color: #fff;
+  text-shadow:
+    0 0 0.12em color-mix(in srgb, var(--n1) 80%, #fff),
+    0 0 0.35em var(--n1),
+    0 0 0.7em color-mix(in srgb, var(--n2) 60%, transparent);
+}
+
+.uname.fx-rainbow {
+  background-image: linear-gradient(90deg, #ff5f6d, #ffc371, #f9f871, #47e891, #4facfe, #a18cd1, #ff5f6d);
+  background-size: 300% 100%;
+  animation: uname-flow 4s linear infinite;
+}
+
+.uname.fx-shine {
+  background-image: linear-gradient(110deg, var(--n1) 35%, #ffffff 50%, var(--n2) 65%);
+  background-size: 250% 100%;
+  animation: uname-flow 3.2s linear infinite;
+}
+
+.uname.fx-flow {
+  background-image: linear-gradient(90deg, var(--n1), var(--n2), var(--n1));
+  background-size: 200% 100%;
+  animation: uname-flow 3s linear infinite;
+}
+
+.uname.fx-pulse {
+  animation: uname-pulse 2.2s ease-in-out infinite;
+}
+
+/* Las sombras van con filter (no text-shadow): así también valen con nombres en degradado */
+
+.uname.fx-fire {
+  background-image: linear-gradient(0deg, #dc2626, #f97316 45%, #fde047);
+  background-size: 100% 200%;
+  filter: drop-shadow(0 0 0.25em rgba(249, 115, 22, 0.55));
+  animation: uname-rise 1.6s ease-in-out infinite alternate;
+}
+
+.uname.fx-ice {
+  background-image: linear-gradient(120deg, #e0f2fe, #7dd3fc 40%, #ffffff 55%, #38bdf8);
+  filter: drop-shadow(0 0 0.25em rgba(125, 211, 252, 0.6));
+}
+
+.uname.fx-gold {
+  background-image: linear-gradient(180deg, #fff7cc 0%, #f5c542 40%, #b8860b 60%, #fde68a 100%);
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.35));
+}
+
+.uname.fx-chrome {
+  background-image: linear-gradient(180deg, #ffffff 0%, #cbd5e1 45%, #64748b 52%, #f1f5f9 100%);
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.4));
+}
+
+.uname.fx-glitch {
+  filter: drop-shadow(0.06em 0 0 #ff00c8) drop-shadow(-0.06em 0 0 #00fff9);
+  animation: uname-glitch 2.4s steps(1) infinite;
+}
+
+.uname.fx-retro {
+  filter: drop-shadow(0.05em 0.05em 0 var(--n2)) drop-shadow(0.05em 0.05em 0 color-mix(in srgb, var(--n2) 55%, #000));
+}
+
+.uname.fx-outline {
+  background: none !important;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 0.045em var(--n1);
+}
+
+/* Cómic: contorno negro alrededor (cuatro sombras) y otra desplazada */
+.uname.fx-toon {
+  filter: drop-shadow(0.04em 0 0 #0b0b12) drop-shadow(-0.04em 0 0 #0b0b12) drop-shadow(0 0.04em 0 #0b0b12) drop-shadow(0 -0.04em 0 #0b0b12)
+    drop-shadow(0.07em 0.07em 0 #0b0b12);
+}
+
+.uname.fx-holo {
+  background-image: linear-gradient(100deg, #a5f3fc, #f0abfc, #fde68a, #a7f3d0, #a5f3fc);
+  background-size: 300% 100%;
+  animation: uname-flow 5s linear infinite;
+}
+
+@keyframes uname-flow {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes uname-rise {
+  from {
+    background-position: 0 100%;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+
+@keyframes uname-pulse {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 0 transparent);
+  }
+  50% {
+    filter: drop-shadow(0 0 0.35em var(--n1));
+  }
+}
+
+@keyframes uname-glitch {
+  0%,
+  86%,
+  100% {
+    filter: drop-shadow(0.06em 0 0 #ff00c8) drop-shadow(-0.06em 0 0 #00fff9);
+  }
+  88% {
+    filter: drop-shadow(-0.08em 0.02em 0 #ff00c8) drop-shadow(0.08em -0.02em 0 #00fff9);
+  }
+  92% {
+    filter: drop-shadow(0.1em -0.03em 0 #ff00c8) drop-shadow(-0.04em 0.03em 0 #00fff9);
+  }
+}
+
+/* Fuentes: la de la app, la grande de la app y las que trae Windows */
+.font-display {
+  font-family: 'Archivo Black', 'Nunito Variable', sans-serif;
+  letter-spacing: 0.01em;
+}
+
+.font-serif {
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
+.font-mono {
+  font-family: 'Cascadia Mono', Consolas, monospace;
+}
+
+.font-hand {
+  font-family: 'Segoe Print', 'Comic Sans MS', cursive;
+}
+
+.font-impact {
+  font-family: Impact, 'Arial Black', sans-serif;
+  letter-spacing: 0.02em;
+}
+
+.font-tech {
+  font-family: Bahnschrift, 'Segoe UI', sans-serif;
+  letter-spacing: 0.03em;
+}
+
+.font-ink {
+  font-family: 'Ink Free', 'Segoe Print', cursive;
+}
+
+.font-elegant {
+  font-family: Gabriola, 'Palatino Linotype', serif;
+  /* Gabriola dibuja las letras muy pequeñas */
+  font-size: 1.7em;
+  line-height: 0.9;
+}
+
+.font-script {
+  font-family: 'Segoe Script', 'Segoe Print', cursive;
+}
+
+.font-comic {
+  font-family: 'Comic Sans MS', 'Segoe Print', cursive;
+}
+
+.font-classic {
+  font-family: 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
+}
+
+.font-typewriter {
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 700;
+}
+
+.font-news {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', sans-serif;
+}
+
+.font-boli {
+  font-family: 'MV Boli', 'Segoe Print', cursive;
+}
+
+.font-modern {
+  font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
+}
+
+/* ——— Marcos del avatar: un aro alrededor de la foto (la máscara deja solo el borde) ——— */
+.avatar.framed::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  padding: 2.5px;
+  border-radius: 50%;
+  pointer-events: none;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.frame-gold::before {
+  background: conic-gradient(from 20deg, #fde68a, #f59e0b, #b45309, #fde68a, #f59e0b, #fde68a);
+}
+
+.frame-silver::before {
+  background: conic-gradient(from 30deg, #f8fafc, #94a3b8, #475569, #e2e8f0, #94a3b8, #f8fafc);
+}
+
+.frame-bronze::before {
+  background: conic-gradient(from 10deg, #fcd9b6, #c2410c, #7c2d12, #fdba74, #c2410c, #fcd9b6);
+}
+
+.frame-neon::before {
+  background: conic-gradient(from var(--frame-angle), #22d3ee, #a855f7, #ec4899, #22d3ee);
+  filter: drop-shadow(0 0 6px #a855f7);
+  animation: frame-spin 3s linear infinite;
+}
+
+.frame-fire::before {
+  background: conic-gradient(#fde047, #f97316, #dc2626, #f97316, #fde047);
+  filter: drop-shadow(0 0 6px #f97316);
+  animation: frame-flicker 1.6s ease-in-out infinite alternate;
+}
+
+.frame-ice::before {
+  background: conic-gradient(#e0f2fe, #7dd3fc, #38bdf8, #e0f2fe, #bae6fd, #e0f2fe);
+  filter: drop-shadow(0 0 5px #7dd3fc);
+}
+
+.frame-rainbow::before {
+  background: conic-gradient(from var(--frame-angle), #f43f5e, #f59e0b, #facc15, #22c55e, #06b6d4, #6366f1, #d946ef, #f43f5e);
+  animation: frame-spin 4s linear infinite;
+}
+
+.frame-pixel::before {
+  border-radius: 6px;
+  background: repeating-conic-gradient(#22c55e 0 25%, #15803d 0 50%) 0 0 / 8px 8px;
+}
+
+.frame-pixel,
+.frame-pixel img {
+  border-radius: 4px;
+}
+
+.frame-leaf::before {
+  background: conic-gradient(#bbf7d0, #22c55e, #166534, #86efac, #22c55e, #bbf7d0);
+}
+
+.frame-ruby::before {
+  background: conic-gradient(#fecdd3, #e11d48, #881337, #fda4af, #e11d48, #fecdd3);
+  filter: drop-shadow(0 0 4px #e11d48);
+}
+
+.frame-emerald::before {
+  background: conic-gradient(#a7f3d0, #10b981, #064e3b, #6ee7b7, #10b981, #a7f3d0);
+  filter: drop-shadow(0 0 4px #10b981);
+}
+
+.frame-sapphire::before {
+  background: conic-gradient(#bfdbfe, #2563eb, #1e3a8a, #93c5fd, #2563eb, #bfdbfe);
+  filter: drop-shadow(0 0 4px #2563eb);
+}
+
+.frame-amethyst::before {
+  background: conic-gradient(#e9d5ff, #9333ea, #4c1d95, #d8b4fe, #9333ea, #e9d5ff);
+  filter: drop-shadow(0 0 4px #9333ea);
+}
+
+.frame-sakura::before {
+  background: conic-gradient(#fff1f2, #f9a8d4, #fbcfe8, #ffffff, #f472b6, #fff1f2);
+}
+
+.frame-toxic::before {
+  background: conic-gradient(#d9f99d, #84cc16, #365314, #bef264, #84cc16, #d9f99d);
+  filter: drop-shadow(0 0 6px #84cc16);
+  animation: frame-flicker-lime 1.8s ease-in-out infinite alternate;
+}
+
+.frame-sunset::before {
+  background: conic-gradient(#fde68a, #fb7185, #7c3aed, #fb7185, #fde68a);
+}
+
+.frame-ocean::before {
+  background: conic-gradient(#a5f3fc, #0891b2, #1e3a8a, #22d3ee, #a5f3fc);
+}
+
+.frame-shadow::before {
+  background: conic-gradient(#000, #374151, #0b0b12, #4b5563, #000);
+  filter: drop-shadow(0 0 5px #000);
+}
+
+.frame-galaxy::before {
+  background: conic-gradient(from var(--frame-angle), #1e1b4b, #7c3aed, #ec4899, #312e81, #06b6d4, #1e1b4b);
+  filter: drop-shadow(0 0 6px #7c3aed);
+  animation: frame-spin 6s linear infinite;
+}
+
+.frame-aurora::before {
+  background: conic-gradient(from var(--frame-angle), #22d3ee, #a3e635, #a855f7, #22d3ee);
+  animation:
+    frame-spin 8s linear infinite,
+    frame-hue 6s linear infinite;
+}
+
+.frame-pulse::before {
+  background: var(--gradient);
+  animation: frame-pulse 1.8s ease-in-out infinite;
+}
+
+.frame-holo::before {
+  background: conic-gradient(from var(--frame-angle), #a5f3fc, #f0abfc, #fde68a, #a7f3d0, #c4b5fd, #a5f3fc);
+  animation: frame-spin 5s linear infinite;
+}
+
+.frame-candy::before {
+  background: repeating-conic-gradient(from var(--frame-angle), #f472b6 0 12.5%, #ffffff 0 25%);
+  animation: frame-spin 7s linear infinite;
+}
+
+.frame-electric::before {
+  background: repeating-conic-gradient(from var(--frame-angle), #22d3ee 0 8%, transparent 0 16%);
+  filter: drop-shadow(0 0 5px #22d3ee);
+  animation: frame-spin 1.6s linear infinite;
+}
+
+/* El giro de los aros mueve el ángulo del degradado: rotar la caja agrandaba (en sus esquinas invisibles) lo que
+   ocupa, y la barra de scroll del chat temblaba sin parar */
+@property --frame-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes frame-spin {
+  to {
+    --frame-angle: 360deg;
+  }
+}
+
+@keyframes frame-hue {
+  to {
+    filter: hue-rotate(360deg);
+  }
+}
+
+@keyframes frame-flicker {
+  from {
+    filter: drop-shadow(0 0 4px #f97316);
+  }
+  to {
+    filter: drop-shadow(0 0 10px #ef4444);
+  }
+}
+
+@keyframes frame-flicker-lime {
+  from {
+    filter: drop-shadow(0 0 3px #84cc16);
+  }
+  to {
+    filter: drop-shadow(0 0 9px #a3e635);
+  }
+}
+
+@keyframes frame-pulse {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 2px var(--accent));
+    opacity: 0.85;
+  }
+  50% {
+    filter: drop-shadow(0 0 9px var(--accent));
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .uname,
+  .avatar.framed::before {
+    animation: none !important;
+  }
+}
+
+/* Insignias */
+.pbadge {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 16px;
+  backdrop-filter: blur(8px);
+}
+
+/* ——— Tarjeta de perfil ——— */
+.pcard {
+  position: relative;
+  border-radius: 22px;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: 0 20px 50px -25px rgba(0, 0, 0, 0.7);
+}
+
+.pcard.themed {
+  background: linear-gradient(165deg, var(--pt1), var(--pt2));
+  border-color: color-mix(in srgb, var(--pt2) 50%, transparent);
+  color: #fff;
+}
+
+.pcard.themed .pcard-sub,
+.pcard.themed .pcard-since,
+.pcard.themed .pcard-block h3 {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+/* Siempre en 5:2 (el tamaño recomendado para subirlo): se ve igual en la vista previa y en el perfil */
+.pcard-banner {
+  position: relative;
+  aspect-ratio: 5 / 2;
+  /* En un perfil ancho, 5:2 lo hacía enorme: como mucho, una franja (la imagen se encuadra por su punto elegido) */
+  max-height: 180px;
+  width: 100%;
+  background: var(--gradient);
+  overflow: hidden;
+}
+
+.pcard-banner-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pcard-body {
+  position: relative;
+  padding: 0 22px 20px;
+}
+
+.pcard-top {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: -48px;
+}
+
+.pcard-avatar {
+  position: relative;
+}
+
+.pcard-ava {
+  width: 96px;
+  height: 96px;
+  font-size: 38px;
+  box-shadow: 0 0 0 6px var(--surface);
+}
+
+.pcard.themed .pcard-ava {
+  box-shadow: 0 0 0 6px var(--pt1);
+}
+
+/* Con marco, el marco hace de borde (la sombra del borde lo taparía) */
+.pcard-ava.framed,
+.pcard.themed .pcard-ava.framed {
+  box-shadow: none;
+}
+
+.pcard-ava.framed::before {
+  inset: -7px;
+  padding: 5px;
+}
+
+.pcard-ava img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.pcard-ava .presence {
+  width: 22px;
+  height: 22px;
+  right: 2px;
+  bottom: 2px;
+  border-width: 4px;
+}
+
+.pcard-badges {
+  display: flex;
+  gap: 6px;
+  padding-bottom: 4px;
+}
+
+.pcard-name {
+  margin: 12px 0 0;
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.pcard-sub {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.pcard-custom {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+  margin-top: 12px;
+  padding: 8px 14px;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 13px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.pcard-custom-emoji {
+  font-size: 17px;
+}
+
+.pcard-presence {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.pcard-presence i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--muted);
+}
+
+.pcard-presence.online i {
+  background: var(--success);
+}
+
+.pcard-presence.playing i {
+  background: var(--accent);
+}
+
+.pcard-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.pcard-block {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.pcard-block h3 {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.pcard-about {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.spoiler {
+  padding: 0 4px;
+  border: 0;
+  border-radius: 4px;
+  background: #1f1d2b;
+  color: transparent;
+  font: inherit;
+  cursor: pointer;
+  transition:
+    color 200ms ease,
+    background-color 200ms ease;
+}
+
+.spoiler.open {
+  background: rgba(255, 255, 255, 0.1);
+  color: inherit;
+  cursor: text;
+}
+
+.pcard-since {
+  margin-top: 16px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* ——— Editor: compacto, con la vista previa pegada arriba al bajar ——— */
+.pe {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 380px);
+  gap: 18px;
+  align-items: start;
+}
+
+.pe-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+.pe-preview {
+  position: sticky;
+  top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.pe-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 16px;
+}
+
+.pe-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.pe-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.pe-row2 {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 10px;
+}
+
+.pe-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.pe-field em{
+  color: var(--muted);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.pe-field input,
+.pe-field textarea,
+.pe-custom input{
+  width: 100%;
+  padding: 8px 11px;
+  border-radius: 11px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-weight: 600;
+  box-sizing: border-box;
+}
+
+.pe-field textarea {
+  resize: vertical;
+  min-height: 64px;
+}
+
+.pe-hint {
+  margin-top: -3px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.pe-sub {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.pe-switch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.pe-swatches {
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pe-swatch {
+  width: 28px;
+  height: 28px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+  color: #fff;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.4));
+}
+
+.pe-swatch.on {
+  box-shadow:
+    0 0 0 2px var(--bg),
+    0 0 0 4px var(--accent);
+}
+
+.pe-swatch-custom {
+  background: var(--surface);
+  color: var(--text-2);
+}
+
+.pe-reset {
+  align-self: flex-start;
+  padding: 0;
+}
+
+.pe-seg button {
+  height: 28px;
+  padding: 0 12px;
+  font-size: 12px;
+}
+
+/* Efectos y fuentes: cada opción se ve tal cual queda */
+.pe-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 6px;
+}
+
+.pe-tile {
+  height: 36px;
+  padding: 0 8px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition:
+    transform 160ms var(--ease-out),
+    border-color 160ms ease;
+}
+
+.pe-tile.on {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.pe-tile:active {
+  transform: scale(0.97);
+}
+
+.pe-frames {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(74px, 1fr));
+  gap: 6px;
+}
+
+.pe-frame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 10px 4px 7px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-2);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    transform 160ms var(--ease-out),
+    border-color 160ms ease;
+}
+
+.pe-frame > span:last-child {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pe-frame .avatar {
+  width: 38px;
+  height: 38px;
+  font-size: 16px;
+}
+
+.pe-frame .avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.pe-frame.on {
+  border-color: var(--accent);
+  color: var(--text);
+  background: var(--accent-soft);
+}
+
+.pe-frame:active {
+  transform: scale(0.97);
+}
+
+.pe-custom {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) 170px;
+  gap: 8px;
+}
+
+.pe-emoji {
+  text-align: center;
+  font-size: 17px !important;
+}
+
+.pe-save {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+@media (max-width: 1100px) {
+  .pe {
+    grid-template-columns: 1fr;
+  }
+
+  .pe-preview {
+    position: static;
+    order: -1;
+  }
+
+  .pe-custom {
+    grid-template-columns: 56px minmax(0, 1fr);
+  }
+
+  .pe-custom > :last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Banner subido: subirlo y encuadrarlo */
+.pe-banner-img {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pe-banner-img .pe-zoom {
+  max-width: 460px;
+}
+
+.pe-drop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 22px 16px;
+  border-radius: 14px;
+  border: 1.5px dashed color-mix(in srgb, var(--text) 25%, transparent);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    transform 160ms var(--ease-out);
+}
+
+.pe-drop:hover {
+  border-color: var(--accent);
+}
+
+.pe-drop:active {
+  transform: scale(0.99);
+}
+
+.pe-drop svg {
+  color: var(--accent);
+}
+
+.pe-drop small {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Del tamaño de la vista previa (a todo el ancho del editor salía gigante); la proporción 5:2 no cambia */
+.pe-framer {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  aspect-ratio: 5 / 2;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--surface);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.pe-framer:active {
+  cursor: grabbing;
+}
+
+.pe-framer-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  transform: translateX(-50%);
+  padding: 4px 10px;
+  border-radius: 99px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  pointer-events: none;
+  opacity: 0.9;
+}
+
+.pe-zoom {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--muted);
+}
+
+.pe-banner-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* ——— Placa de nombre: el fondo de una fila (amigos, chats, miembros). A la izquierda, una sombra para que el nombre
+   siempre se lea ——— */
+.plate-row {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.plate-row > .plate {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.plate-row > .plate::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(10, 8, 18, 0.82), rgba(10, 8, 18, 0.55) 45%, transparent 74%);
+}
+
+.plate-row small {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* Con placa, lo seleccionado se marca con un borde (el fondo lo tapa la placa) */
+.cl-row.plate-row.on {
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+.cd-member.plate-row {
+  border-radius: var(--r-md);
+  padding-inline: 10px;
+}
+
+/* Editor de perfil: así te ven en la lista de amigos */
+.pe-row {
+  width: 100%;
+  margin: 6px 0 14px;
+  cursor: default;
+}
+
+/* ——— Con la app enfocada, todo animado; sin foco (jugando a Minecraft en otra pantalla), todo quieto: así no gasta
+   mientras juegas (ver lib/motion.ts) ——— */
+html.still-all .uname,
+html.still-all .uname::before,
+html.still-all .uname::after,
+html.still-all .avatar.framed::before {
+  animation-play-state: paused !important;
+}

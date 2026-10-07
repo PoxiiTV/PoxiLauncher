@@ -1,0 +1,14 @@
+node_modules/
+out/
+dist/
+release/
+deploy-hosting/
+resources/bin/
+*.zip
+*.7z
+*.log
+.env
+.DS_Store
+Thumbs.db
+research_notes/
+reports/

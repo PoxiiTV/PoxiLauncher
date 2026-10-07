@@ -1,0 +1,2441 @@
+/* ——— Minecraft (beta) ———
+   Estética de inventario de Minecraft adaptada de Minepanel (github.com/Ketbome/minepanel, Minepanel Community
+   License, © Ketbome): paneles de piedra con relieve, huecos de inventario, botones de píxel y barra tipo XP.
+   Todo va con el prefijo .mc- y solo dentro de la sección (y sus ventanas y menús, que se pintan fuera). */
+
+.mc-page,
+.mc-modal,
+.mc-menu {
+  --mc-frame: #0a0e08;
+  --mc-stone: #101609;
+  --mc-stone-deep: #0d1207;
+  --mc-stone-hi: #1c2716;
+  --mc-emerald: #9dff3f;
+  --mc-emerald-2: #7fd82f;
+  --mc-diamond: #5fd7ff;
+  --mc-gold: #ffd25f;
+  --mc-lapis: #5b8dff;
+  --mc-redstone: #ff6b5f;
+  --mc-text: #eef3e4;
+  --mc-text-2: #a9b699;
+  --mc-muted: #768868;
+  --mc-font: 'Archivo Variable', 'Archivo', 'Segoe UI', sans-serif;
+  --mc-display: 'Archivo Black', 'Archivo Variable', sans-serif;
+  color: var(--mc-text);
+  font-family: var(--mc-font);
+}
+
+/* Fondo de plano (cuadrícula) que ocupa toda la sección */
+.mc-page {
+  min-height: 100%;
+  background-color: var(--mc-frame);
+  background-image:
+    linear-gradient(rgba(157, 255, 63, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(157, 255, 63, 0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.mc-page ::selection {
+  background: rgba(157, 255, 63, 0.28);
+}
+
+/* ——— Piezas ——— */
+.mc-panel {
+  position: relative;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.12)), var(--mc-stone);
+  border: 3px solid var(--mc-frame);
+  box-shadow:
+    inset 3px 3px 0 rgba(255, 255, 255, 0.1),
+    inset -3px -3px 0 rgba(0, 0, 0, 0.5),
+    6px 6px 0 rgba(157, 255, 63, 0.08);
+}
+
+/* Grano de piedra para que ningún panel se vea plano */
+.mc-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.06) 0 2px, transparent 2px 4px),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.025) 0 2px, transparent 2px 4px);
+  mix-blend-mode: overlay;
+}
+
+.mc-panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+.mc-slot {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 56px;
+  height: 56px;
+  background: var(--mc-stone-deep);
+  border: 3px solid var(--mc-frame);
+  box-shadow:
+    inset 3px 3px 0 rgba(0, 0, 0, 0.55),
+    inset -3px -3px 0 rgba(255, 255, 255, 0.06);
+}
+
+.mc-slot img {
+  width: 38px;
+  height: 38px;
+}
+
+.mc-slot-sm {
+  width: 40px;
+  height: 40px;
+}
+
+.mc-head {
+  display: inline-block;
+  flex: none;
+  image-rendering: pixelated;
+  background-repeat: no-repeat;
+  box-shadow: 0 0 0 2px var(--mc-frame);
+}
+
+.mc-display {
+  font-family: var(--mc-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.55);
+}
+
+.mc-title {
+  margin: 0;
+  font-family: var(--mc-display);
+  font-weight: 400;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--mc-emerald);
+}
+
+.mc-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 7px;
+  border: 2px solid var(--mc-frame);
+  background: var(--mc-stone-hi);
+  color: var(--mc-text);
+  font-family: var(--mc-font);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 255, 255, 0.2),
+    inset -1px -1px 0 rgba(0, 0, 0, 0.4);
+  vertical-align: middle;
+}
+
+.mc-tag-beta {
+  background: var(--mc-gold);
+  color: var(--mc-frame);
+  text-shadow: none;
+}
+
+.mc-tag-on {
+  background: var(--mc-emerald);
+  color: var(--mc-frame);
+  text-shadow: none;
+}
+
+/* Botón de píxel: se hunde al pulsarlo */
+.mc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 16px;
+  color: #f3fff8;
+  font-family: var(--mc-font);
+  font-size: 14px;
+  font-weight: 700;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.6);
+  white-space: nowrap;
+  background: linear-gradient(180deg, #2c3b22, #1c2716);
+  border: 3px solid var(--mc-frame);
+  border-radius: 0;
+  box-shadow:
+    inset 2px 2px 0 rgba(255, 255, 255, 0.22),
+    inset -2px -2px 0 rgba(0, 0, 0, 0.45),
+    0 4px 0 rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+  transition:
+    filter 120ms ease,
+    transform 60ms ease,
+    box-shadow 60ms ease;
+}
+
+@media (hover: hover) {
+  .mc-btn:hover:not(:disabled) {
+    filter: brightness(1.14);
+  }
+}
+
+.mc-btn:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow:
+    inset 2px 2px 0 rgba(0, 0, 0, 0.4),
+    inset -2px -2px 0 rgba(255, 255, 255, 0.12);
+}
+
+.mc-btn:disabled {
+  filter: grayscale(0.7) brightness(0.7);
+  cursor: not-allowed;
+}
+
+.mc-btn:focus-visible,
+.mc-iconbtn:focus-visible,
+.mc-slot-btn:focus-visible {
+  outline: 2px solid var(--mc-emerald);
+  outline-offset: 2px;
+}
+
+.mc-btn-emerald {
+  background: linear-gradient(180deg, var(--mc-emerald), var(--mc-emerald-2));
+  color: var(--mc-frame);
+  text-shadow: none;
+}
+
+.mc-btn-lapis {
+  background: linear-gradient(180deg, #4f7bdd, #2f55ad);
+}
+
+.mc-btn-redstone {
+  background: linear-gradient(180deg, #e0564b, #a8352c);
+}
+
+.mc-btn-sm {
+  height: 32px;
+  padding: 0 10px;
+  font-size: 12.5px;
+}
+
+.mc-iconbtn {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  color: rgba(234, 255, 242, 0.55);
+  background: transparent;
+  border: 2px solid transparent;
+  border-radius: 0;
+  cursor: pointer;
+  transition:
+    color 120ms ease,
+    background 120ms ease,
+    border-color 120ms ease;
+}
+
+@media (hover: hover) {
+  .mc-iconbtn:hover {
+    color: var(--mc-emerald);
+    background: var(--mc-stone-deep);
+    border-color: var(--mc-frame);
+    box-shadow:
+      inset 2px 2px 0 rgba(0, 0, 0, 0.55),
+      inset -2px -2px 0 rgba(255, 255, 255, 0.06);
+  }
+
+  .mc-iconbtn-danger:hover {
+    color: var(--mc-redstone);
+  }
+}
+
+.mc-input {
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
+  color: var(--mc-text);
+  font: 600 14px var(--mc-font);
+  background: var(--mc-stone-deep);
+  border: 3px solid var(--mc-frame);
+  border-radius: 0;
+  box-shadow: inset 3px 3px 0 rgba(0, 0, 0, 0.5);
+  outline: none;
+  caret-color: var(--mc-emerald);
+}
+
+.mc-input::placeholder {
+  color: rgba(234, 255, 242, 0.35);
+}
+
+.mc-input:focus {
+  border-color: var(--mc-emerald-2);
+}
+
+/* Barra de progreso segmentada, como la de experiencia */
+.mc-bar {
+  height: 16px;
+  background: var(--mc-stone-deep);
+  border: 3px solid var(--mc-frame);
+  box-shadow: inset 3px 3px 0 rgba(0, 0, 0, 0.55);
+  overflow: hidden;
+}
+
+.mc-bar-fill {
+  position: relative;
+  height: 100%;
+  background: linear-gradient(180deg, var(--mc-emerald), var(--mc-emerald-2));
+  box-shadow:
+    inset 0 3px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.25);
+  transition: width 300ms ease;
+}
+
+.mc-bar-fill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.32) 0 2px, transparent 2px 9px);
+}
+
+/* Sin total todavía (preparando): un tramo que va y viene */
+.mc-bar-fill.indeterminate {
+  width: 30%;
+  animation: mc-indeterminate 1.3s ease-in-out infinite alternate;
+}
+
+@keyframes mc-indeterminate {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(233%);
+  }
+}
+
+/* ——— Página ——— */
+.mc-hero {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 22px 24px;
+  margin-bottom: 26px;
+}
+
+.mc-hero-block {
+  width: 72px;
+  height: 72px;
+  flex: none;
+  filter: drop-shadow(4px 4px 0 rgba(0, 0, 0, 0.45));
+}
+
+.mc-hero-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.mc-hero-text h1 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 6px;
+  font-size: 30px;
+  line-height: 1.1;
+}
+
+.mc-hero-text p {
+  margin: 0;
+  color: var(--mc-text-2);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Cuenta activa (abre las cuentas) */
+.mc-slot-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: none;
+  max-width: 280px;
+  padding: 8px 12px 8px 8px;
+  color: var(--mc-text);
+  font-family: var(--mc-font);
+  text-align: left;
+  background: var(--mc-stone-deep);
+  border: 3px solid var(--mc-frame);
+  border-radius: 0;
+  box-shadow:
+    inset 3px 3px 0 rgba(0, 0, 0, 0.55),
+    inset -3px -3px 0 rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+  transition: border-color 120ms ease;
+}
+
+@media (hover: hover) {
+  .mc-slot-btn:hover {
+    border-color: var(--mc-emerald-2);
+  }
+}
+
+.mc-account-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.mc-account-text b,
+.mc-account-text small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mc-account-text b {
+  font-size: 14px;
+}
+
+.mc-account-text small {
+  color: var(--mc-muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.mc-welcome {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 18px 22px;
+  margin-bottom: 26px;
+}
+
+.mc-welcome > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.mc-welcome h2 {
+  margin: 0 0 4px;
+  font-size: 17px;
+}
+
+.mc-welcome p {
+  margin: 0;
+  color: var(--mc-text-2);
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+.mc-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 40px;
+  margin-bottom: 14px;
+}
+
+.mc-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 36px 24px;
+  text-align: center;
+}
+
+.mc-empty img {
+  filter: drop-shadow(4px 4px 0 rgba(0, 0, 0, 0.45));
+}
+
+.mc-empty h3 {
+  margin: 6px 0 0;
+  font-size: 18px;
+}
+
+.mc-empty p {
+  max-width: 440px;
+  margin: 0 0 8px;
+  color: var(--mc-text-2);
+  line-height: 1.55;
+}
+
+/* Instancias */
+.mc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px;
+}
+
+.mc-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  min-width: 0;
+}
+
+.mc-card.running {
+  border-color: var(--mc-emerald-2);
+  box-shadow:
+    inset 3px 3px 0 rgba(255, 255, 255, 0.1),
+    inset -3px -3px 0 rgba(0, 0, 0, 0.5),
+    0 0 18px rgba(157, 255, 63, 0.25);
+}
+
+.mc-card-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.mc-card-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.mc-card-text h3 {
+  margin: 0 0 3px;
+  font-size: 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mc-card-version {
+  color: var(--mc-emerald);
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.mc-card-meta {
+  color: var(--mc-muted);
+  font-size: 12.5px;
+  font-weight: 600;
+  min-height: 17px;
+}
+
+.mc-play {
+  width: 100%;
+  height: 44px;
+  font-size: 15px;
+}
+
+.mc-card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 44px;
+}
+
+.mc-playing {
+  color: var(--mc-emerald);
+  font-weight: 800;
+  font-size: 14px;
+  animation: mc-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes mc-pulse {
+  50% {
+    opacity: 0.55;
+  }
+}
+
+.mc-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 44px;
+}
+
+.mc-progress .mc-btn {
+  align-self: flex-end;
+}
+
+.mc-progress-label {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--mc-text-2);
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+/* ——— Ventanas ——— */
+.modal.mc-modal {
+  border-radius: 0;
+  border: 3px solid var(--mc-frame);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(0, 0, 0, 0.12)), var(--mc-stone);
+  box-shadow:
+    inset 3px 3px 0 rgba(255, 255, 255, 0.1),
+    inset -3px -3px 0 rgba(0, 0, 0, 0.5),
+    8px 8px 0 rgba(0, 0, 0, 0.35);
+}
+
+.modal.mc-modal h2 {
+  font-family: var(--mc-display);
+  font-weight: 400;
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.55);
+  margin-bottom: 16px;
+}
+
+.modal.mc-modal p {
+  color: var(--mc-text-2);
+}
+
+/* Sin la franja fija de abajo: taparía el relieve del marco (el contenido de estas ventanas es corto) */
+.modal.mc-modal .actions {
+  position: static;
+  margin: 22px 0 0;
+  padding: 0;
+  background: none;
+}
+
+.mc-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-bottom: 16px;
+}
+
+.mc-field > span {
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--mc-text-2);
+}
+
+.mc-hint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  color: var(--mc-muted);
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+.mc-warn {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 10px 0 0 !important;
+  padding: 10px 12px;
+  color: var(--mc-gold) !important;
+  font-size: 12.5px;
+  line-height: 1.5;
+  background: rgba(255, 210, 95, 0.07);
+  border: 2px solid rgba(255, 210, 95, 0.25);
+}
+
+.mc-warn svg {
+  flex: none;
+  margin-top: 2px;
+}
+
+.mc-check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--mc-text-2);
+  cursor: pointer;
+}
+
+.mc-check input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--mc-emerald-2);
+}
+
+.select.mc-select {
+  width: 100%;
+  height: 40px;
+  border-radius: 0;
+  border: 3px solid var(--mc-frame);
+  background: var(--mc-stone-deep);
+  color: var(--mc-text);
+  font-family: var(--mc-font);
+  box-shadow: inset 3px 3px 0 rgba(0, 0, 0, 0.5);
+}
+
+.select.mc-select.open,
+.select.mc-select:focus-visible {
+  border-color: var(--mc-emerald-2);
+}
+
+.select.mc-select .select-chevron {
+  color: var(--mc-emerald);
+}
+
+/* Menús y listas desplegables (se pintan fuera de la sección) */
+.menu.mc-menu {
+  border-radius: 0;
+  border: 3px solid var(--mc-frame);
+  background: var(--mc-stone);
+  backdrop-filter: none;
+  box-shadow:
+    inset 2px 2px 0 rgba(255, 255, 255, 0.08),
+    6px 6px 0 rgba(0, 0, 0, 0.4);
+}
+
+.menu.mc-menu button {
+  border-radius: 0;
+  color: var(--mc-text);
+  font-family: var(--mc-font);
+}
+
+.menu.mc-menu button:hover,
+.menu.mc-menu [role='option'].hover {
+  background: var(--mc-stone-hi);
+}
+
+.menu.mc-menu [role='option'].selected {
+  color: var(--mc-emerald);
+}
+
+.menu.mc-menu button.danger {
+  color: var(--mc-redstone);
+}
+
+.menu.mc-menu button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Cuentas */
+.mc-accounts {
+  list-style: none;
+  margin: 0 0 18px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mc-accounts li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 8px 8px 10px;
+  background: var(--mc-stone-deep);
+  border: 3px solid var(--mc-frame);
+  min-width: 0;
+}
+
+.mc-accounts li.active {
+  border-color: var(--mc-emerald-2);
+}
+
+.mc-add {
+  padding: 14px 0;
+  border-top: 2px solid var(--mc-frame);
+}
+
+.mc-add-head {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 10px;
+}
+
+.mc-add-head b {
+  font-size: 14.5px;
+}
+
+.mc-add-head small {
+  color: var(--mc-text-2);
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+
+.mc-add-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.mc-signing {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--mc-stone-deep);
+  border: 3px solid var(--mc-frame);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.mc-signing > span {
+  flex: 1;
+  min-width: 0;
+  line-height: 1.45;
+}
+
+.mc-signing em {
+  display: block;
+  font-style: normal;
+  color: var(--mc-gold);
+  font-family: 'Cascadia Mono', Consolas, monospace;
+  letter-spacing: 0.04em;
+}
+
+.mc-log {
+  margin: 0;
+  max-height: min(60vh, 520px);
+  overflow: auto;
+  padding: 12px 14px;
+  background: var(--mc-frame);
+  border: 3px solid #000;
+  color: #cdd8bd;
+  font: 12px/1.5 'Cascadia Mono', Consolas, monospace;
+  white-space: pre-wrap;
+  word-break: break-word;
+  user-select: text;
+}
+
+@media (max-width: 760px) {
+  .mc-hero {
+    flex-wrap: wrap;
+  }
+
+  .mc-slot-btn {
+    max-width: none;
+    width: 100%;
+  }
+
+  .mc-welcome {
+    flex-wrap: wrap;
+  }
+}
+
+/* ——— Fase 2: instancia, contenido, buscador, historial ——— */
+.mc-seg {
+  display: inline-flex;
+  flex-wrap: wrap;
+  background: var(--mc-stone-deep);
+  border: 3px solid var(--mc-frame);
+  box-shadow: inset 3px 3px 0 rgba(0, 0, 0, 0.5);
+}
+
+.mc-seg button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 34px;
+  padding: 0 12px;
+  border: 0;
+  background: transparent;
+  color: var(--mc-text-2);
+  font: 700 13px var(--mc-font);
+  cursor: pointer;
+  transition:
+    background 120ms ease,
+    color 120ms ease;
+}
+
+@media (hover: hover) {
+  .mc-seg button:hover:not(.on) {
+    color: var(--mc-text);
+    background: rgba(255, 255, 255, 0.04);
+  }
+}
+
+.mc-seg button.on {
+  color: var(--mc-frame);
+  background: linear-gradient(180deg, var(--mc-emerald), var(--mc-emerald-2));
+  box-shadow: inset 2px 2px 0 rgba(255, 255, 255, 0.25);
+}
+
+.mc-seg-count {
+  font-size: 11px;
+  opacity: 0.7;
+  font-variant-numeric: tabular-nums;
+}
+
+/* La tarjeta de instancia se abre pulsando su icono o su nombre */
+.mc-card-open {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+@media (hover: hover) {
+  .mc-card-open:hover h3 {
+    color: var(--mc-emerald);
+  }
+}
+
+.mc-card-open:focus-visible {
+  outline: 2px solid var(--mc-emerald);
+  outline-offset: 3px;
+}
+
+.mc-card-text h3 {
+  transition: color 120ms ease;
+}
+
+.mc-inst-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  margin-bottom: 18px;
+}
+
+.mc-inst-title {
+  flex: 1;
+  min-width: 0;
+}
+
+.mc-inst-title h1 {
+  margin: 0 0 4px;
+  font-size: 24px;
+  line-height: 1.15;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mc-inst-title small {
+  color: var(--mc-muted);
+  font-weight: 600;
+}
+
+.mc-inst-play {
+  flex: none;
+  width: 240px;
+}
+
+.mc-play-big {
+  height: 48px;
+  font-size: 16px;
+}
+
+.mc-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+  border-bottom: 3px solid var(--mc-frame);
+}
+
+.mc-tabs button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 16px;
+  margin-bottom: -3px;
+  border: 3px solid transparent;
+  border-bottom: 0;
+  background: transparent;
+  color: var(--mc-text-2);
+  font: 800 14px var(--mc-font);
+  cursor: pointer;
+}
+
+.mc-tabs button.on {
+  color: var(--mc-emerald);
+  background: var(--mc-stone);
+  border-color: var(--mc-frame);
+  box-shadow: inset 2px 2px 0 rgba(255, 255, 255, 0.08);
+}
+
+@media (hover: hover) {
+  .mc-tabs button:hover:not(.on) {
+    color: var(--mc-text);
+  }
+}
+
+.mc-count-badge {
+  min-width: 20px;
+  padding: 1px 6px;
+  font-size: 11px;
+  text-align: center;
+  color: var(--mc-text);
+  background: var(--mc-stone-hi);
+  border: 2px solid var(--mc-frame);
+  font-variant-numeric: tabular-nums;
+}
+
+.mc-task {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.mc-task > span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mc-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.mc-toolbar-end {
+  margin-left: auto;
+}
+
+.mc-filter {
+  width: 220px;
+  height: 40px;
+}
+
+.mc-search {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+}
+
+.mc-search svg {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--mc-muted);
+  pointer-events: none;
+}
+
+.mc-search .mc-input {
+  padding-left: 36px;
+}
+
+.select.mc-select-sm {
+  width: 170px;
+}
+
+.mc-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.mc-tag-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 10px;
+  color: var(--mc-text-2);
+  font: 700 12.5px var(--mc-font);
+  background: var(--mc-stone-deep);
+  border: 2px solid var(--mc-frame);
+  cursor: pointer;
+  transition:
+    color 120ms ease,
+    border-color 120ms ease;
+}
+
+.mc-tag-toggle.on {
+  color: var(--mc-emerald);
+  border-color: var(--mc-emerald-2);
+}
+
+.mc-tag-gold {
+  background: rgba(255, 210, 95, 0.14);
+  color: var(--mc-gold);
+}
+
+.mc-tag-red {
+  background: rgba(255, 107, 95, 0.14);
+  color: var(--mc-redstone);
+}
+
+.mc-tag-soft {
+  background: transparent;
+  color: var(--mc-text-2);
+  box-shadow: none;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.mc-note {
+  padding: 16px 18px;
+  color: var(--mc-text-2);
+  line-height: 1.55;
+}
+
+.mc-pad {
+  padding: 18px 4px;
+}
+
+.mc-pad-top {
+  margin-top: 12px;
+}
+
+.mc-empty-sm {
+  padding: 28px 20px;
+}
+
+/* Filas (contenido, resultados, historial, versiones) */
+.mc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mc-list-scroll {
+  max-height: min(56vh, 480px);
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.mc-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 8px 10px;
+  background: var(--mc-stone);
+  border: 3px solid var(--mc-frame);
+  box-shadow: inset 2px 2px 0 rgba(255, 255, 255, 0.06);
+  transition: opacity 160ms ease;
+}
+
+.mc-row.off .mc-row-text,
+.mc-row.off .mc-slot {
+  opacity: 0.5;
+}
+
+.mc-row.mine {
+  border-color: var(--mc-emerald-2);
+}
+
+.mc-row .mc-slot {
+  color: var(--mc-muted);
+}
+
+.mc-row .mc-slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mc-slot-sm img {
+  width: 30px;
+  height: 30px;
+}
+
+.mc-row-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+}
+
+.mc-row-text b {
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mc-row-sub {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  color: var(--mc-muted);
+  font-size: 12px;
+  font-weight: 600;
+  min-width: 0;
+}
+
+.mc-row-sub .mc-tag {
+  padding: 1px 6px;
+  font-size: 10.5px;
+}
+
+.mc-more {
+  display: flex;
+  justify-content: center;
+  margin-top: 14px;
+}
+
+/* Interruptor de píxel */
+.mc-switch {
+  position: relative;
+  flex: none;
+  width: 44px;
+  height: 24px;
+  padding: 0;
+  background: var(--mc-stone-deep);
+  border: 3px solid var(--mc-frame);
+  box-shadow: inset 2px 2px 0 rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  transition: background 140ms ease;
+}
+
+.mc-switch::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  background: var(--mc-muted);
+  box-shadow: inset 2px 2px 0 rgba(255, 255, 255, 0.25);
+  transition:
+    transform 140ms var(--ease-out, ease-out),
+    background 140ms ease;
+}
+
+.mc-switch.on {
+  background: #24350f;
+}
+
+.mc-switch.on::after {
+  transform: translateX(20px);
+  background: var(--mc-emerald);
+}
+
+.mc-switch:focus-visible {
+  outline: 2px solid var(--mc-emerald);
+  outline-offset: 2px;
+}
+
+.mc-btn-gold {
+  background: linear-gradient(180deg, var(--mc-gold), #d9a52f);
+  color: var(--mc-frame);
+  text-shadow: none;
+}
+
+.mc-history-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 18px;
+  margin-bottom: 12px;
+}
+
+.mc-history-head > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.mc-history-head p {
+  margin: 6px 0 0;
+  color: var(--mc-text-2);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Ventana estrecha: los botones de la cabecera de la instancia, solo con su icono (el nombre no se come) */
+@media (max-width: 1400px) {
+  .mc-inst-head .mc-hb-label {
+    display: none;
+  }
+
+  .mc-inst-play {
+    width: 190px;
+  }
+}
+
+@media (max-width: 900px) {
+  .mc-inst-head {
+    flex-wrap: wrap;
+  }
+
+  .mc-inst-play {
+    width: 100%;
+  }
+
+  .mc-toolbar-end {
+    margin-left: 0;
+  }
+}
+
+/* Tarjetas de mods en cuadrícula (una al lado de otra, como las de Thunderstore) */
+.mc-cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+.mc-mod {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  padding: 12px;
+  background: var(--mc-stone);
+  border: 3px solid var(--mc-frame);
+  box-shadow:
+    inset 2px 2px 0 rgba(255, 255, 255, 0.07),
+    inset -2px -2px 0 rgba(0, 0, 0, 0.35);
+  transition: border-color 140ms ease;
+}
+
+@media (hover: hover) {
+  .mc-mod:hover {
+    border-color: var(--mc-stone-hi);
+  }
+}
+
+.mc-mod.off .mc-mod-top .mc-slot,
+.mc-mod.off .mc-row-text,
+.mc-mod.off .mc-mod-badges {
+  opacity: 0.45;
+}
+
+.mc-mod-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.mc-mod-top .mc-slot {
+  color: var(--mc-muted);
+}
+
+.mc-mod-top .mc-slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mc-mod-top .mc-row-sub {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Siempre 2 líneas de alto: todas las tarjetas iguales */
+.mc-mod-desc {
+  margin: 0;
+  height: calc(2 * 1.45em);
+  color: var(--mc-text-2);
+  font-size: 12.5px;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.mc-mod-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  min-height: 22px;
+}
+
+.mc-mod-badges .mc-tag {
+  padding: 1px 6px;
+  font-size: 10.5px;
+}
+
+.mc-mod-foot {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  min-width: 0;
+}
+
+.mc-mod-foot small {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-right: auto;
+  color: var(--mc-muted);
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.mc-mod-foot .mc-btn-sm {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mc-mod-foot small {
+  white-space: nowrap;
+}
+
+/* "Instalado" con la misma altura que el botón "Instalar": los pies de las tarjetas quedan alineados */
+.mc-mod-foot .mc-tag {
+  height: 32px;
+  padding: 0 10px;
+}
+
+.mc-mod-top .mc-switch {
+  margin-left: 4px;
+}
+
+/* ——— Fase 3: portada con pestañas, crasheos, mundos, ajustes ——— */
+.mc-tabs-inline {
+  margin-bottom: 0;
+  border-bottom: 0;
+}
+
+.mc-tabs-inline button {
+  margin-bottom: 0;
+  border-bottom: 3px solid transparent;
+}
+
+.mc-tabs-inline button.on {
+  border-bottom-color: var(--mc-frame);
+}
+
+.mc-section-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.mc-card.crashed {
+  border-color: #6b2a24;
+}
+
+.mc-card-crash {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  min-height: 17px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--mc-redstone);
+  font: 800 12.5px var(--mc-font);
+  cursor: pointer;
+}
+
+@media (hover: hover) {
+  .mc-card-crash:hover {
+    text-decoration: underline;
+  }
+}
+
+.mc-crash {
+  padding: 14px 16px;
+  margin-bottom: 18px;
+  border-color: #6b2a24;
+  background: linear-gradient(180deg, rgba(255, 107, 95, 0.1), rgba(0, 0, 0, 0.12)), var(--mc-stone);
+}
+
+.mc-crash-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  color: var(--mc-redstone);
+}
+
+.mc-crash-head > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.mc-crash-head h2 {
+  margin: 0;
+  font-size: 16px;
+  color: var(--mc-text);
+}
+
+.mc-crash-head p {
+  margin: 2px 0 0;
+  color: var(--mc-text-2);
+  font-size: 13px;
+}
+
+.mc-crash ul {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mc-crash li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  background: var(--mc-stone-deep);
+  border: 2px solid var(--mc-frame);
+  font-size: 13.5px;
+  line-height: 1.45;
+}
+
+.mc-crash li > span {
+  flex: 1;
+  min-width: 0;
+}
+
+.mc-toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 0;
+  border-top: 2px solid var(--mc-frame);
+}
+
+.mc-toggle-row > span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.mc-toggle-row b {
+  font-size: 14px;
+}
+
+.mc-toggle-row small {
+  color: var(--mc-muted);
+  font-size: 12.5px;
+}
+
+.mc-hint-block {
+  margin-bottom: 12px;
+}
+
+.mc-cards-wide {
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+}
+
+.mc-world .mc-slot {
+  width: 52px;
+  height: 52px;
+}
+
+img.pixel {
+  image-rendering: pixelated;
+}
+
+.mc-backups {
+  padding-top: 8px;
+  border-top: 2px solid var(--mc-frame);
+}
+
+.mc-backups-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  color: var(--mc-text-2);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.mc-backups ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-height: 170px;
+  overflow: auto;
+}
+
+.mc-backups li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+}
+
+.mc-backups li .mc-tag {
+  padding: 1px 6px;
+  font-size: 10px;
+}
+
+.mc-backup-when {
+  flex: 1;
+  min-width: 0;
+  color: var(--mc-text-2);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mc-backups .mc-iconbtn {
+  width: 28px;
+  height: 28px;
+}
+
+.mc-iconbtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ——— Fase 4: amigos, packs compartidos y skins ——— */
+.mc-people {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mc-person {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 10px 0 4px;
+  color: var(--mc-text);
+  font: 700 13px var(--mc-font);
+  background: var(--mc-stone-deep);
+  border: 2px solid var(--mc-frame);
+}
+
+.mc-person .avatar {
+  width: 26px;
+  height: 26px;
+  font-size: 11px;
+}
+
+.mc-person.pending {
+  opacity: 0.6;
+  border-style: dashed;
+}
+
+.mc-person.pick {
+  cursor: pointer;
+  transition: border-color 120ms ease;
+}
+
+.mc-person.pick.on {
+  border-color: var(--mc-emerald-2);
+  color: var(--mc-emerald);
+}
+
+.modal.mc-modal .actions .mc-actions-left {
+  margin-right: auto;
+}
+
+.mc-invites {
+  padding: 14px 16px;
+  margin-bottom: 20px;
+}
+
+.mc-invites .mc-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.mc-invites ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mc-invites li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  background: var(--mc-stone-deep);
+  border: 2px solid var(--mc-frame);
+}
+
+.mc-pack-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  margin-bottom: 18px;
+  border-color: #5b4a17;
+  background: linear-gradient(180deg, rgba(255, 210, 95, 0.1), rgba(0, 0, 0, 0.12)), var(--mc-stone);
+  color: var(--mc-gold);
+}
+
+.mc-pack-banner > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.mc-pack-banner b {
+  color: var(--mc-text);
+  font-size: 14px;
+}
+
+.mc-pack-banner small {
+  color: var(--mc-text-2);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.mc-diff {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.mc-diff h3 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 8px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.mc-diff-add {
+  color: var(--mc-emerald);
+}
+
+.mc-diff-change {
+  color: var(--mc-diamond);
+}
+
+.mc-diff-remove {
+  color: var(--mc-redstone);
+}
+
+.mc-diff ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 44vh;
+  overflow: auto;
+}
+
+.mc-diff li {
+  padding: 6px 8px;
+  background: var(--mc-stone-deep);
+  border: 2px solid var(--mc-frame);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.mc-diff li small {
+  display: block;
+  color: var(--mc-muted);
+  font-size: 11.5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mc-group-history {
+  margin-bottom: 22px;
+}
+
+.mc-group-history .mc-row .avatar {
+  width: 34px;
+  height: 34px;
+  flex: none;
+}
+
+.mc-skin {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.mc-skin-view {
+  width: auto;
+  height: auto;
+  padding: 8px;
+  background:
+    radial-gradient(circle at 50% 35%, rgba(157, 255, 63, 0.08), transparent 70%),
+    var(--mc-stone-deep);
+}
+
+.mc-skin-canvas {
+  display: block;
+  width: 180px;
+  height: 280px;
+  cursor: grab;
+  filter: drop-shadow(4px 6px 0 rgba(0, 0, 0, 0.45));
+}
+
+.mc-skin-side {
+  flex: 1;
+  min-width: 0;
+}
+
+.mc-skin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.mc-capes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mc-cape {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 10px;
+  color: var(--mc-text-2);
+  font: 700 12.5px var(--mc-font);
+  background: var(--mc-stone-deep);
+  border: 2px solid var(--mc-frame);
+  cursor: pointer;
+}
+
+.mc-cape.on {
+  color: var(--mc-emerald);
+  border-color: var(--mc-emerald-2);
+}
+
+/* Frente de la capa: 10×16 píxeles en (1,1) de su textura de 64×32 */
+.mc-cape-img {
+  width: 15px;
+  height: 24px;
+  background-repeat: no-repeat;
+  background-size: 96px 48px;
+  background-position: -1.5px -1.5px;
+  image-rendering: pixelated;
+}
+
+@media (max-width: 700px) {
+  .mc-skin {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+/* ——— Fase 5: servidor en tu PC ——— */
+.mc-server-form {
+  padding: 18px 20px;
+  max-width: 720px;
+}
+
+.mc-server-form .mc-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.mc-eula {
+  flex-wrap: wrap;
+  padding-top: 12px;
+  border-top: 2px solid var(--mc-frame);
+}
+
+.mc-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--mc-diamond);
+  font: 700 13px var(--mc-font);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.mc-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.mc-server-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+}
+
+.mc-server-dot {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  background: var(--mc-muted);
+  box-shadow: 0 0 0 2px var(--mc-frame);
+}
+
+.mc-server-dot.running {
+  background: var(--mc-emerald);
+  box-shadow:
+    0 0 0 2px var(--mc-frame),
+    0 0 10px rgba(157, 255, 63, 0.6);
+}
+
+.mc-server-dot.installing,
+.mc-server-dot.starting,
+.mc-server-dot.stopping {
+  background: var(--mc-gold);
+  animation: mc-pulse 1.2s ease-in-out infinite;
+}
+
+.mc-tabs .mc-server-dot {
+  width: 8px;
+  height: 8px;
+}
+
+.mc-server-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+}
+
+.mc-server-info b {
+  font-size: 15px;
+}
+
+.mc-server-info small {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--mc-text-2);
+  font-size: 12.5px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mc-server-info small.ok {
+  color: var(--mc-emerald);
+}
+
+.mc-server-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mc-hint-block svg {
+  vertical-align: -2px;
+}
+
+.mc-console {
+  height: min(52vh, 460px);
+  max-height: none;
+  margin-bottom: 8px;
+}
+
+.mc-console-input .mc-input {
+  font-family: 'Cascadia Mono', Consolas, monospace;
+  font-size: 13px;
+}
+
+@media (max-width: 900px) {
+  .mc-server-head {
+    flex-wrap: wrap;
+  }
+}
+
+/* Progreso en una sola línea: el texto se recorta si hace falta y los MB nunca se parten */
+.mc-progress-label {
+  align-items: baseline;
+  min-width: 0;
+}
+
+.mc-progress-label span:first-child {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mc-progress-label .num {
+  flex: none;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.mc-hero-skin {
+  flex: none;
+  height: 58px;
+}
+
+/* ——— Zona Minecraft: mientras estás en la sección, el resto de la app también va de Minecraft ———
+   (lo pone lib/zone.ts en <html>; manda sobre el tema claro y el acento elegidos) */
+:root[data-zone='minecraft'][data-theme][data-accent] {
+  color-scheme: dark;
+  --font: 'Archivo Variable', 'Archivo', 'Segoe UI', sans-serif;
+  --bg: #0a0e08;
+  --bg-2: #0f150b;
+  --surface: rgba(157, 255, 63, 0.05);
+  --surface-2: rgba(157, 255, 63, 0.09);
+  --surface-3: rgba(157, 255, 63, 0.14);
+  --glass: rgba(13, 18, 7, 0.94);
+  --border: #1f2a18;
+  --border-strong: #2c3a22;
+  --text: #eef3e4;
+  --text-2: #a9b699;
+  --muted: #768868;
+  --accent: #9dff3f;
+  --accent-2: #7fd82f;
+  --accent-rgb: 157, 255, 63;
+  --placeholder: linear-gradient(135deg, #1c2716, #101609);
+  --scrim: rgba(4, 6, 3, 0.65);
+  --r-sm: 0px;
+  --r-md: 0px;
+  --r-lg: 0px;
+  --r-xl: 0px;
+}
+
+:root[data-zone='minecraft'] .ambient {
+  background: var(--bg);
+}
+
+/* Barra de arriba y lateral: piedra oscura con la cuadrícula de la sección */
+:root[data-zone='minecraft'] .titlebar,
+:root[data-zone='minecraft'] .sidebar {
+  background-color: #0d1207;
+  background-image:
+    linear-gradient(rgba(157, 255, 63, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(157, 255, 63, 0.03) 1px, transparent 1px);
+  background-size: 16px 16px;
+  backdrop-filter: none;
+}
+
+:root[data-zone='minecraft'] .titlebar {
+  border-bottom: 2px solid #050804;
+  box-shadow: inset 0 -2px 0 rgba(255, 255, 255, 0.04);
+}
+
+:root[data-zone='minecraft'] .sidebar {
+  border-right: 2px solid #050804;
+  box-shadow: inset -2px 0 0 rgba(255, 255, 255, 0.04);
+}
+
+:root[data-zone='minecraft'] .titlebar .brand,
+:root[data-zone='minecraft'] .friends-head {
+  font-family: 'Archivo Black', 'Archivo Variable', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+@font-face {
+  font-family: 'Minecraftia';
+  src: url('../assets/fonts/Minecraftia-Regular.ttf') format('truetype');
+  font-display: block;
+}
+
+.titlebar .brand-mc {
+  display: none;
+  align-items: center;
+  gap: 8px;
+}
+
+:root[data-zone='minecraft'] .titlebar .brand > :not(.brand-mc) {
+  display: none;
+}
+
+:root[data-zone='minecraft'] .titlebar .brand-mc {
+  display: flex;
+}
+
+.brand-mc img {
+  height: 26px;
+  width: auto;
+}
+
+/* Minecraftia (Andrew Tyler, uso personal): nítida a 16 px (cada píxel de la letra, 2 de pantalla) */
+.brand-mc span {
+  font-family: 'Minecraftia', monospace;
+  font-size: 16px;
+  line-height: 1;
+  color: #ffffff;
+  /* La fuente deja mucho hueco debajo de las letras: sin esto quedan por encima del centro del icono */
+  transform: translateY(7px);
+  /* Capa propia: Windows no le pone ClearType (bordes rojos y azules en una letra de píxel) */
+  will-change: transform;
+}
+
+.brand-mc b {
+  font-weight: 400;
+  color: #8fd268;
+  background: none;
+  -webkit-background-clip: initial;
+  background-clip: initial;
+}
+
+/* Botón activo: un bloque con relieve */
+:root[data-zone='minecraft'] .nav-item.active {
+  background: #1c2716;
+  box-shadow:
+    inset 2px 2px 0 rgba(255, 255, 255, 0.08),
+    inset -2px -2px 0 rgba(0, 0, 0, 0.5),
+    0 0 0 2px #050804;
+}
+
+:root[data-zone='minecraft'] .nav-item.active::before {
+  border-radius: 0;
+  background: var(--accent);
+}
+
+:root[data-zone='minecraft'] .badge {
+  border-radius: 0;
+  color: #0a1204;
+  box-shadow: 0 0 0 1px #050804;
+}
+
+/* Buscador: hundido, como un hueco del inventario */
+:root[data-zone='minecraft'] .search input {
+  border-radius: 0;
+  border-color: #050804;
+  background: #070a05;
+  box-shadow: inset 2px 2px 0 rgba(0, 0, 0, 0.55);
+}
+
+:root[data-zone='minecraft'] .search input:focus {
+  border-color: var(--accent);
+  box-shadow: inset 2px 2px 0 rgba(0, 0, 0, 0.55);
+}
+
+:root[data-zone='minecraft'] .search kbd {
+  border-radius: 0;
+}
+
+/* Fotos de perfil: cuadradas con marco, como las cabezas del juego */
+:root[data-zone='minecraft'] .avatar,
+:root[data-zone='minecraft'] .avatar img {
+  border-radius: 0;
+}
+
+:root[data-zone='minecraft'] .avatar {
+  box-shadow: 0 0 0 2px #050804;
+}
+
+:root[data-zone='minecraft'] .avatar .presence {
+  border-radius: 0;
+}
+
+/* ——— Estilo Minecraft en todas las pantallas (tema Minecraft) ———
+   Las mismas piezas que la sección (paneles con relieve, botones de bloque, huecos de inventario, interruptores y
+   barras de píxel) aplicadas a las piezas comunes de la app. Lo de la sección (.mc-*) ya lleva lo suyo: se excluye. */
+
+/* Nada redondo en Minecraft (menos las miniaturas de los otros temas y el anillo del final de la bienvenida) */
+:root[data-zone='minecraft'] :not(.theme-mini, .theme-mini *, .ob-ring, .ob-ring *),
+:root[data-zone='minecraft'] :not(.theme-mini, .theme-mini *, .ob-ring, .ob-ring *)::before,
+:root[data-zone='minecraft'] :not(.theme-mini, .theme-mini *, .ob-ring, .ob-ring *)::after {
+  border-radius: 0 !important;
+}
+
+/* Fondo de cuadrícula, el mismo que la sección */
+:root[data-zone='minecraft'] .main {
+  background-color: #0a0e08;
+  background-image:
+    linear-gradient(rgba(157, 255, 63, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(157, 255, 63, 0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+:root[data-zone='minecraft'] ::-webkit-scrollbar-thumb {
+  background-color: #26331d;
+  border: 2px solid #0a0e08;
+  background-clip: border-box;
+}
+
+:root[data-zone='minecraft'] ::selection {
+  background: rgba(157, 255, 63, 0.28);
+}
+
+/* Títulos con la letra de la sección */
+:root[data-zone='minecraft'] .page-title,
+:root[data-zone='minecraft'] .acct-title,
+:root[data-zone='minecraft'] .section-title,
+:root[data-zone='minecraft'] .modal:not(.mc-modal) h2,
+:root[data-zone='minecraft'] .empty h3 {
+  font-family: 'Archivo Black', 'Archivo Variable', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+:root[data-zone='minecraft'] .page-title{
+  text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.5);
+}
+
+:root[data-zone='minecraft'] .section-title {
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+}
+
+/* Botones: bloques con relieve que se hunden al pulsar */
+:root[data-zone='minecraft'] .btn {
+  border: 3px solid #050804;
+  background: linear-gradient(180deg, #2c3b22, #1c2716);
+  color: #f3fff8;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.6);
+  box-shadow:
+    inset 2px 2px 0 rgba(255, 255, 255, 0.2),
+    inset -2px -2px 0 rgba(0, 0, 0, 0.45),
+    0 3px 0 rgba(0, 0, 0, 0.45);
+  transition:
+    filter 120ms ease,
+    transform 60ms ease,
+    box-shadow 60ms ease,
+    opacity 160ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :root[data-zone='minecraft'] .btn:hover:not(:disabled) {
+    background: linear-gradient(180deg, #2c3b22, #1c2716);
+    border-color: #050804;
+    filter: brightness(1.15);
+  }
+}
+
+:root[data-zone='minecraft'] .btn:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow:
+    inset 2px 2px 0 rgba(0, 0, 0, 0.4),
+    inset -2px -2px 0 rgba(255, 255, 255, 0.1);
+}
+
+:root[data-zone='minecraft'] .btn-primary,
+:root[data-zone='minecraft'] .btn-primary:hover:not(:disabled) {
+  background: linear-gradient(180deg, #9dff3f, #7fd82f);
+  color: #0a0e08;
+  text-shadow: none;
+}
+
+:root[data-zone='minecraft'] .btn-ghost,
+:root[data-zone='minecraft'] .btn-ghost:active:not(:disabled) {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  text-shadow: none;
+  color: var(--text-2);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :root[data-zone='minecraft'] .btn-ghost:hover:not(:disabled) {
+    background: var(--surface-2);
+    border-color: transparent;
+    color: var(--text);
+    filter: none;
+  }
+}
+
+:root[data-zone='minecraft'] .btn-danger {
+  color: #ff8a7f;
+}
+
+/* Selector de opciones (tema, idioma…): huecos de inventario con la elegida en verde */
+:root[data-zone='minecraft'] .seg {
+  background: #0d1207;
+  border: 3px solid #050804;
+  box-shadow: inset 2px 2px 0 rgba(0, 0, 0, 0.5);
+}
+
+:root[data-zone='minecraft'] .seg button.on {
+  background: linear-gradient(180deg, #9dff3f, #7fd82f);
+  color: #0a0e08;
+  box-shadow:
+    inset 2px 2px 0 rgba(255, 255, 255, 0.35),
+    inset -2px -2px 0 rgba(0, 0, 0, 0.25);
+}
+
+/* Paneles de piedra con relieve */
+:root[data-zone='minecraft'] .panel {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(0, 0, 0, 0.12)), #101609;
+  border: 3px solid #050804;
+  box-shadow:
+    inset 3px 3px 0 rgba(255, 255, 255, 0.08),
+    inset -3px -3px 0 rgba(0, 0, 0, 0.5),
+    6px 6px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* Campos: hundidos, como un hueco del inventario */
+:root[data-zone='minecraft'] .input,
+:root[data-zone='minecraft'] .select:not(.mc-select) {
+  background: #070a05;
+  border: 3px solid #050804;
+  box-shadow: inset 3px 3px 0 rgba(0, 0, 0, 0.5);
+}
+
+:root[data-zone='minecraft'] .input:focus,
+:root[data-zone='minecraft'] .select:not(.mc-select):focus-visible,
+:root[data-zone='minecraft'] .select.open:not(.mc-select) {
+  border-color: var(--accent);
+  box-shadow: inset 3px 3px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* Interruptores de píxel */
+:root[data-zone='minecraft'] .toggle {
+  background: #0d1207;
+  border: 3px solid #050804;
+  box-shadow: inset 2px 2px 0 rgba(0, 0, 0, 0.5);
+}
+
+:root[data-zone='minecraft'] .toggle::after {
+  top: 3px;
+  left: 3px;
+  width: 14px;
+  height: 14px;
+  background: #768868;
+  box-shadow: inset 2px 2px 0 rgba(255, 255, 255, 0.25);
+}
+
+:root[data-zone='minecraft'] .toggle.on {
+  background: #24350f;
+}
+
+:root[data-zone='minecraft'] .toggle.on::after {
+  transform: translateX(18px);
+  background: var(--accent);
+}
+
+/* Barras de progreso como la de experiencia */
+:root[data-zone='minecraft'] .progress {
+  background: #0d1207;
+  box-shadow:
+    inset 2px 2px 0 rgba(0, 0, 0, 0.55),
+    0 0 0 2px #050804;
+}
+
+:root[data-zone='minecraft'] .progress > i {
+  background: linear-gradient(180deg, #9dff3f, #7fd82f);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.25);
+}
+
+:root[data-zone='minecraft'] .progress.success > i {
+  background: var(--success);
+}
+
+:root[data-zone='minecraft'] .progress.error > i {
+  background: #ff6b5f;
+}
+
+/* Avisos, ventanas y menús: paneles de piedra */
+:root[data-zone='minecraft'] .toast {
+  background: #101609;
+  border: 3px solid #050804;
+  backdrop-filter: none;
+  box-shadow:
+    inset 2px 2px 0 rgba(255, 255, 255, 0.08),
+    inset -2px -2px 0 rgba(0, 0, 0, 0.5),
+    6px 6px 0 rgba(0, 0, 0, 0.4);
+}
+
+:root[data-zone='minecraft'] .modal:not(.mc-modal) {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 160px), var(--bg-2);
+  border: 3px solid #050804;
+  box-shadow:
+    inset 3px 3px 0 rgba(255, 255, 255, 0.08),
+    inset -3px -3px 0 rgba(0, 0, 0, 0.5),
+    8px 8px 0 rgba(0, 0, 0, 0.45);
+}
+
+:root[data-zone='minecraft'] .menu:not(.mc-menu) {
+  border: 3px solid #050804;
+  background: #101609;
+  backdrop-filter: none;
+  box-shadow:
+    inset 2px 2px 0 rgba(255, 255, 255, 0.08),
+    6px 6px 0 rgba(0, 0, 0, 0.4);
+}
+
+
+/* ——— Optimizar: la lista de mods de rendimiento ——— */
+.opt-list {
+  display: grid;
+  gap: 6px;
+  margin: 12px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.opt-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  background: var(--mc-stone-deep);
+  border: 2px solid var(--mc-frame);
+}
+
+.opt-list li.opt-off {
+  opacity: 0.55;
+}
+
+.opt-check {
+  cursor: pointer;
+}
+
+.opt-mark {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 20px;
+  color: var(--mc-emerald);
+}
+
+.opt-text {
+  display: grid;
+  min-width: 0;
+}
+
+.opt-text small {
+  color: var(--mc-text-2);
+  font-size: 12px;
+}
+
+.opt-mark.warn {
+  color: #ffd25f;
+}

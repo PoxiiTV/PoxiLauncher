@@ -1,0 +1,70 @@
+appId: com.poxi.poxilauncher
+productName: PoxiLauncher
+copyright: Copyright © 2026 Poxi
+directories:
+  output: release
+  buildResources: resources
+
+# Solo lo compilado: el filtro evita que se cuelen fuentes, tests o node_modules de desarrollo
+files:
+  - out/**/*
+  - package.json
+  - '!**/*.map'
+
+extraResources:
+  - from: resources/bin/7z.exe
+    to: bin/7z.exe
+  - from: resources/bin/7z.dll
+    to: bin/7z.dll
+  - from: resources/icon.png
+    to: icon.png
+  # Avisos de licencia de terceros (Minepanel pide incluirlo en las copias)
+  - from: THIRD-PARTY.md
+    to: THIRD-PARTY.md
+
+asar: true
+# Enlaces de invitación poxilauncher://invite/<código> (el instalador los registra y los quita al desinstalar)
+protocols:
+  - name: PoxiLauncher
+    schemes:
+      - poxilauncher
+
+win:
+  icon: resources/icon.png
+  # Usuario normal: nada de pedir administrador (ni al abrir ni al actualizar)
+  requestedExecutionLevel: asInvoker
+  target:
+    # Instalador pequeno: al abrirlo descarga el programa del servidor (el portable sigue siendo completo)
+    - target: nsis-web
+      arch: [x64]
+    - target: portable
+      arch: [x64]
+  artifactName: ${productName}-${version}-${arch}.${ext}
+
+nsis:
+  oneClick: false
+  # Por usuario (%LOCALAPPDATA%\Programs): instalar y actualizar sin aviso de administrador
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: always
+  createStartMenuShortcut: true
+  shortcutName: PoxiLauncher
+  artifactName: ${productName}-Setup-${version}.${ext}
+  deleteAppDataOnUninstall: false
+  runAfterFinish: true
+  include: resources/installer.nsh
+  # En el idioma del PC: español si es español; si no, inglés (los mismos que la app)
+  installerLanguages: [en_US, es_ES]
+
+# El instalador web usa las opciones de nsis de arriba; el paquete que descarga sale de "publish" (el servidor)
+nsisWeb:
+  artifactName: ${productName}-Setup-${version}.${ext}
+
+portable:
+  artifactName: ${productName}-Portable-${version}.${ext}
+  requestExecutionLevel: user
+
+# Actualizaciones desde el mini PC (genera latest.yml + .blockmap)
+publish:
+  provider: generic
+  url: ${env.MAIN_VITE_UPDATE_URL}

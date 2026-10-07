@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Invitación · PoxiLauncher</title>
+    <link rel="icon" href="/admin/icon.png" />
+    <link rel="stylesheet" href="/legal/legal.css" />
+    <link rel="stylesheet" href="/invite/invite.css" />
+    <script src="/invite/invite.js" defer></script>
+  </head>
+  <body>
+    <main class="inv">
+      <div class="inv-brand"><img src="/admin/icon.png" alt="" /> PoxiLauncher</div>
+
+      <section id="ok" hidden>
+        <p class="inv-who"><span id="ava" class="inv-ava"></span> <b id="name"></b> te invita</p>
+        <div id="pack" class="inv-pack" hidden>
+          <img id="icon" alt="" hidden />
+          <div>
+            <h1 id="pack-name"></h1>
+            <p class="muted" id="pack-info"></p>
+          </div>
+        </div>
+        <h1 id="friend-title" hidden>a jugar a Minecraft juntos</h1>
+        <p class="muted" id="what"></p>
+        <p class="warn" id="full" hidden>El pack está lleno: entrarás como amigo, pero no en el pack.</p>
+        <div class="inv-buttons">
+          <a class="inv-btn primary" id="open" href="#">Abrir en PoxiLauncher</a>
+          <a class="inv-btn dl" href="#">Descargar PoxiLauncher</a>
+        </div>
+        <p class="muted small">¿No se abre? Instálalo, ábrelo y vuelve a pulsar «Abrir en PoxiLauncher».</p>
+        <p class="muted small" id="expires"></p>
+      </section>
+
+      <section id="bad" hidden>
+        <h1>Esta invitación ya no vale</h1>
+        <p class="muted">Ha caducado, se ha usado demasiadas veces o la han anulado. Pide a tu amigo un enlace nuevo.</p>
+        <div class="inv-buttons"><a class="inv-btn dl" href="#">Descargar PoxiLauncher</a></div>
+      </section>
+
+      <p class="muted small inv-foot">
+        No es un producto oficial de Minecraft. No está aprobado por Mojang ni Microsoft, ni tiene relación con ellos. ·
+        <a href="/privacidad">Privacidad</a> · <a href="/terminos">Términos</a>
+      </p>
+    </main>
+  </body>
+</html>

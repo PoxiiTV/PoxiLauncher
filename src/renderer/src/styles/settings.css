@@ -1,0 +1,904 @@
+/* ——— Ajustes: una ventana grande («maximizada») por encima de la app, que se ve detrás desenfocada y oscurecida ———
+   Menú agrupado a la izquierda, el contenido en una columna de lectura y la X para volver. Tres niveles de letra
+   (título de categoría, título de grupo, fila) y filas de una línea; lo técnico va en la (i). Colores del tema. */
+
+.pf-layer {
+  position: fixed;
+  inset: var(--titlebar-h) 0 0 0;
+  /* Por debajo de las ventanas (90), los desplegables (100) y los avisos: lo que se abre desde aquí sale encima */
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 28px;
+  background: rgba(6, 4, 12, 0.5);
+  backdrop-filter: blur(14px) saturate(1.15);
+  animation: pf-fade 260ms ease both;
+}
+
+.pf-layer.closing {
+  animation: pf-fade-out 230ms ease both;
+  pointer-events: none;
+}
+
+:root[data-theme='light'] .pf-layer {
+  background: rgba(30, 20, 50, 0.22);
+}
+
+@keyframes pf-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes pf-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+.pf-window {
+  position: relative;
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  width: min(1240px, 100%);
+  height: min(900px, 100%);
+  overflow: hidden;
+  border-radius: 24px;
+  border: 1px solid var(--border-strong);
+  background: color-mix(in srgb, var(--bg) 72%, transparent);
+  box-shadow:
+    0 40px 100px -20px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  /* Sale del botón «Ajustes» (transform-origin, lo pone Layer.tsx) con un poco de rebote, como en Mac */
+  animation: pf-in 380ms cubic-bezier(0.2, 1.1, 0.3, 1) both;
+}
+
+.pf-layer.closing .pf-window {
+  animation: pf-out 230ms cubic-bezier(0.5, 0, 0.75, 0) both;
+}
+
+@keyframes pf-in {
+  from {
+    opacity: 0;
+    transform: scale(0.06);
+  }
+  40% {
+    opacity: 1;
+  }
+}
+
+@keyframes pf-out {
+  to {
+    opacity: 0;
+    transform: scale(0.06);
+  }
+}
+
+/* ——— Menú ——— */
+.pf-side {
+  min-height: 0;
+  overflow: auto;
+  background: color-mix(in srgb, var(--bg-2) 72%, transparent);
+  border-right: 1px solid var(--border);
+}
+
+.pf-nav {
+  padding: 28px 14px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pf-nav-g {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pf-nav-h {
+  padding: 18px 10px 6px;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.pf-nav-i {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  height: 38px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-2);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease,
+    transform 160ms var(--ease-out);
+}
+
+.pf-nav-i svg {
+  flex: none;
+  color: var(--muted);
+  transition: color 160ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .pf-nav-i:hover {
+    background: var(--surface);
+    color: var(--text);
+  }
+}
+
+.pf-nav-i:active {
+  transform: scale(0.98);
+}
+
+.pf-nav-i.on {
+  background: var(--surface-2);
+  color: var(--text);
+  font-weight: 700;
+}
+
+.pf-nav-i.on svg {
+  color: var(--accent);
+}
+
+.pf-nav-i.on::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 9px;
+  bottom: 9px;
+  width: 3px;
+  border-radius: 3px;
+  background: var(--gradient);
+}
+
+/* ——— Buscador ——— */
+.pf-search {
+  position: relative;
+  margin-bottom: 6px;
+}
+
+.pf-search input {
+  width: 100%;
+  height: 38px;
+  padding: 0 32px 0 36px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  outline: none;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease;
+}
+
+.pf-search input::placeholder {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.pf-search input:focus {
+  border-color: rgba(var(--accent-rgb), 0.6);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+  background: var(--surface-2);
+}
+
+.pf-search-i {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  translate: 0 -50%;
+  color: var(--muted);
+  pointer-events: none;
+}
+
+.pf-search-k {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  translate: 0 -50%;
+  padding: 1px 5px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font: inherit;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--muted);
+  pointer-events: none;
+}
+
+.pf-search-x {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  translate: 0 -50%;
+  display: none;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.pf-search-x:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.pf-search.has .pf-search-k {
+  display: none;
+}
+
+.pf-search.has .pf-search-x {
+  display: grid;
+}
+
+/* ——— Contenido ——— */
+.pf-main {
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 32px 28px 72px 40px;
+  background: radial-gradient(700px 420px at 100% 0, rgba(var(--accent-rgb), 0.09), transparent 70%);
+}
+
+.pf-wrap {
+  display: flex;
+  align-items: flex-start;
+  gap: 28px;
+  max-width: 860px;
+}
+
+.pf-host {
+  flex: 1;
+  min-width: 0;
+  max-width: 760px;
+}
+
+.pf-enter {
+  animation: pf-page 260ms var(--ease-out) both;
+}
+
+@keyframes pf-page {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+.pf-close {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.pf-close button {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 2px solid var(--border-strong);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-2);
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease,
+    border-color 160ms ease,
+    transform 160ms var(--ease-out);
+}
+
+.pf-close button:hover {
+  background: var(--surface-2);
+  color: var(--text);
+  border-color: var(--muted);
+}
+
+.pf-close button:active {
+  transform: scale(0.94);
+}
+
+.pf-head {
+  margin-bottom: 4px;
+}
+
+.pf-kicker {
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.pf-title {
+  margin: 4px 0 0;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+}
+
+.pf-sub {
+  margin: 4px 0 0;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+/* ——— Grupos, tarjetas y filas ——— */
+.pf-group {
+  margin-top: 26px;
+}
+
+.pf-gh {
+  margin: 0 0 10px 4px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.pf-stack > * + * {
+  margin-top: 10px;
+}
+
+.pf-foot {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 10px 4px 0;
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.pf-foot svg {
+  flex: none;
+  margin-top: 2px;
+}
+
+.pf-card {
+  position: relative;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.pf-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  min-height: 58px;
+  padding: 14px 20px;
+  border-radius: 15px;
+  transition: background-color 160ms ease;
+}
+
+/* Línea fina entre filas (no llega a los bordes) */
+.pf-row + .pf-row::before,
+.pf-nest + .pf-row::before,
+.pf-row + .pf-nest::before,
+.pf-warn-note + .pf-row::before {
+  content: '';
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  top: 0;
+  height: 1px;
+  background: var(--border);
+}
+
+.pf-row.block {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 14px;
+}
+
+/* El control debajo, a todo el ancho (tarjetas de tema y de mando) */
+.pf-row.block .pf-ctl {
+  display: block;
+}
+
+.pf-click {
+  cursor: pointer;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .pf-click:not(.off):hover {
+    background: var(--surface);
+  }
+}
+
+.pf-row.off .pf-label,
+.pf-row.off .toggle {
+  opacity: 0.5;
+}
+
+.pf-row.off {
+  cursor: default;
+}
+
+.pf-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.pf-label {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 14.5px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text);
+}
+
+.pf-help {
+  margin-top: 3px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+.pf-ctl {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.pf-select {
+  min-width: 210px;
+  justify-content: space-between;
+}
+
+/* Saltar a una fila desde el buscador: un pulso con el color del tema */
+.pf-pulse {
+  animation: pf-pulse 1.9s var(--ease-out);
+}
+
+@keyframes pf-pulse {
+  0%,
+  30% {
+    background: rgba(var(--accent-rgb), 0.18);
+    box-shadow: inset 0 0 0 2px rgba(var(--accent-rgb), 0.7);
+  }
+  100% {
+    background: transparent;
+    box-shadow: inset 0 0 0 2px transparent;
+  }
+}
+
+/* «Guardado» un momento junto al control */
+.pf-saved {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--success);
+  opacity: 0;
+  transform: translateX(4px);
+  transition:
+    opacity 250ms ease,
+    transform 250ms var(--ease-out);
+  pointer-events: none;
+}
+
+.pf-saved.show {
+  opacity: 1;
+  transform: none;
+}
+
+/* Píldoras (beta, estado, aviso) */
+.pf-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 22px;
+  padding: 0 9px;
+  border-radius: 99px;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  background: var(--surface-2);
+  color: var(--text-2);
+}
+
+.pf-pill.ok {
+  background: rgba(34, 197, 94, 0.14);
+  color: var(--success);
+}
+
+.pf-pill.beta {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.pf-pill.warn {
+  background: rgba(245, 158, 11, 0.14);
+  color: var(--warning);
+}
+
+.pf-dot {
+  width: 7px;
+  height: 7px;
+  flex: none;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.pf-dot.live {
+  animation: pf-live 1.6s ease-in-out infinite;
+}
+
+@keyframes pf-live {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/* La (i) y su globo */
+.pf-info {
+  position: relative;
+  display: inline-flex;
+}
+
+.pf-info-btn {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition:
+    color 160ms ease,
+    background-color 160ms ease;
+}
+
+.pf-info-btn:hover,
+.pf-info.open .pf-info-btn {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.pf-pop {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: -12px;
+  z-index: 5;
+  width: 310px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-2);
+  box-shadow: var(--shadow-lg);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--text-2);
+  white-space: normal;
+  text-transform: none;
+  letter-spacing: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.96) translateY(-4px);
+  transform-origin: 20px 0;
+  transition:
+    opacity 150ms ease,
+    transform 180ms var(--ease-out),
+    visibility 0s linear 180ms;
+  cursor: auto;
+}
+
+.pf-info.open .pf-pop {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition:
+    opacity 150ms ease,
+    transform 180ms var(--ease-out);
+}
+
+/* ——— Tarjetas que se despliegan (lo que depende de otra opción) ——— */
+.pf-xp {
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  transition: border-color 250ms ease;
+}
+
+.pf-xp.open {
+  border-color: var(--border-strong);
+}
+
+.pf-chev {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
+}
+
+.pf-chev:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.pf-chev svg {
+  transition: transform 250ms var(--ease-out);
+}
+
+.pf-xp.open .pf-chev svg {
+  transform: rotate(180deg);
+}
+
+.pf-dep {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 280ms var(--ease-out);
+}
+
+.pf-xp.open > .pf-dep {
+  grid-template-rows: 1fr;
+}
+
+.pf-dep-in {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.pf-xp.open .pf-dep-in {
+  overflow: visible;
+}
+
+.pf-kids {
+  margin: 0 0 12px 40px;
+  padding-top: 4px;
+  border-left: 2px solid rgba(var(--accent-rgb), 0.45);
+  animation: pf-page 260ms var(--ease-out) both;
+}
+
+.pf-xp.open > .pf-dep .pf-kids {
+  border-top: 0;
+}
+
+.pf-xp.open > .pf-row::after {
+  content: '';
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 0;
+  height: 1px;
+  background: var(--border);
+}
+
+.pf-kids .pf-row {
+  min-height: 52px;
+  padding: 12px 20px;
+}
+
+.pf-nest {
+  position: relative;
+  margin: 0 0 4px 20px;
+  border-left: 2px solid rgba(var(--accent-rgb), 0.28);
+}
+
+.pf-warn-note {
+  margin: 8px 20px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--danger);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.pf-links {
+  display: flex;
+  gap: 6px;
+  padding-left: 8px;
+}
+
+.pf-about {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 20px;
+  border-radius: 15px;
+}
+
+.pf-about-n {
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.pf-about-v {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+
+/* ——— Resultados del buscador ——— */
+.pf-res-h {
+  margin: 0 0 12px 4px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.pf-res {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: 15px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 160ms ease;
+}
+
+.pf-res + .pf-res::before {
+  content: '';
+  position: absolute;
+  left: 62px;
+  right: 16px;
+  top: 0;
+  height: 1px;
+  background: var(--border);
+}
+
+.pf-res:hover {
+  background: var(--surface);
+}
+
+.pf-res-ic {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  flex: none;
+  border-radius: 10px;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.pf-res-t {
+  flex: 1;
+  min-width: 0;
+}
+
+.pf-res-t b {
+  display: block;
+  font-size: 14.5px;
+  font-weight: 700;
+}
+
+.pf-res-t span {
+  display: block;
+  margin-top: 2px;
+  font-size: 12.5px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pf-res > svg {
+  flex: none;
+  color: var(--muted);
+  transition: transform 200ms var(--ease-out);
+}
+
+.pf-res:hover > svg {
+  transform: translateX(3px);
+  color: var(--accent);
+}
+
+.pf-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 64px 20px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.pf-empty b {
+  color: var(--text);
+  font-size: 16px;
+}
+
+/* Ventana estrecha: la vista previa arriba y las opciones debajo, y se desplaza todo junto */
+
+@media (max-width: 1100px) {
+  .pf-layer {
+    padding: 14px;
+  }
+  .pf-window {
+    grid-template-columns: 240px minmax(0, 1fr);
+  }
+  .pf-main {
+    padding: 28px 20px 64px 28px;
+  }
+}
+
+/* Tema Minecraft: los títulos con la letra de la sección */
+:root[data-zone='minecraft'] .pf-title {
+  font-family: 'Archivo Black', 'Archivo Variable', sans-serif;
+  font-weight: 400;
+}
+
+/* Sin foco (jugando con PoxiLauncher en otra pantalla), quieto */
+html.still-all .pf-dot.live {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pf-enter,
+  .pf-kids,
+  .pf-pulse {
+    animation: none;
+  }
+  .pf-pulse {
+    background: rgba(var(--accent-rgb), 0.14);
+  }
+}

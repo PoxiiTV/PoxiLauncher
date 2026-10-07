@@ -1,0 +1,108 @@
+.inv {
+  max-width: 560px;
+  margin-top: 12vh;
+  text-align: center;
+}
+
+.inv-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 26px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.inv-brand img {
+  width: 28px;
+  height: 28px;
+  image-rendering: pixelated;
+}
+
+.inv-who {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 18px;
+  font-size: 17px;
+}
+
+.inv-ava {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  background: var(--emerald);
+  color: var(--frame);
+  font-weight: 800;
+}
+
+.inv-pack {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  text-align: left;
+}
+
+.inv-pack img {
+  width: 64px;
+  height: 64px;
+  border: 3px solid var(--frame);
+}
+
+.inv h1 {
+  margin: 0 0 4px;
+  font-size: 26px;
+  overflow-wrap: anywhere;
+}
+
+.inv-pack p {
+  margin: 0;
+}
+
+.inv-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin: 26px 0 14px;
+}
+
+.inv-btn {
+  padding: 12px 20px;
+  border: 3px solid var(--frame);
+  background: #1c2716;
+  color: var(--text);
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow:
+    inset 3px 3px 0 rgba(255, 255, 255, 0.12),
+    inset -3px -3px 0 rgba(0, 0, 0, 0.45);
+  transition: transform 120ms ease;
+}
+
+.inv-btn:active {
+  transform: translateY(2px);
+}
+
+.inv-btn.primary {
+  background: linear-gradient(180deg, var(--emerald), #7fd82f);
+  color: var(--frame);
+}
+
+.warn {
+  color: #ffd25f;
+}
+
+.small {
+  font-size: 13px;
+}
+
+.inv-foot {
+  margin-top: 30px;
+}
+
+[hidden] {
+  display: none !important;
+}

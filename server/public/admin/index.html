@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>PoxiLauncher · Panel</title>
+    <link rel="icon" href="icon.png" />
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body>
+    <div class="ambient"></div>
+
+    <!-- Inicio de sesión -->
+    <main id="login" class="center" hidden>
+      <form id="login-form" class="card login-card">
+        <img src="icon.png" alt="" width="64" height="64" class="logo" />
+        <h1>Panel</h1>
+        <p class="muted">Actualizaciones, cuentas y Minecraft de PoxiLauncher</p>
+        <input id="password" type="password" placeholder="Contraseña" autocomplete="current-password" required />
+        <button class="btn primary" type="submit">Entrar</button>
+        <p id="login-error" class="error" hidden></p>
+      </form>
+    </main>
+
+    <!-- Panel -->
+    <main id="panel" hidden>
+      <header class="top">
+        <div class="brand"><img src="icon.png" alt="" width="28" height="28" /> Poxi<b>Launcher</b> <span class="muted">· Panel</span></div>
+        <button id="logout" class="btn ghost">Salir</button>
+      </header>
+
+      <section class="grid">
+        <div class="card current">
+          <span class="label">Versión que reciben las apps</span>
+          <strong id="current-version">—</strong>
+          <span class="muted" id="current-date"></span>
+        </div>
+
+        <div class="card upload">
+          <h2>📦 Publicar versión</h2>
+          <p class="muted">
+            Arrastra desde la carpeta <code>release\</code>: <b>latest.yml</b>, el <b>Setup .exe</b> y su <b>.blockmap</b>
+            (el <b>Portable</b> es opcional).
+          </p>
+          <label id="drop" class="drop">
+            <input id="files" type="file" multiple accept=".yml,.exe,.blockmap" />
+            <span>⬆️ Suelta los archivos aquí o haz clic para elegirlos</span>
+          </label>
+          <ul id="file-list" class="file-list"></ul>
+          <label class="check"><input id="make-current" type="checkbox" checked /> Publicar como versión actual</label>
+          <button id="publish" class="btn primary" disabled>Publicar</button>
+          <p id="upload-msg" class="msg" hidden></p>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <h2>🚩 Denuncias</h2>
+          <span class="muted" id="reports-summary"></span>
+        </div>
+        <div id="reports" class="reports"></div>
+        <p id="reports-empty" class="muted" hidden>Nada pendiente. 🎉</p>
+        <details class="audit">
+          <summary>Resueltas</summary>
+          <ul id="reports-done"></ul>
+        </details>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <h2>👥 Cuentas</h2>
+          <span class="muted" id="accounts-summary"></span>
+        </div>
+        <table class="versions accounts">
+          <thead>
+            <tr>
+              <th>Usuario</th>
+              <th>Estado</th>
+              <th>Amigos</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="accounts"></tbody>
+        </table>
+        <p id="accounts-empty" class="muted" hidden>Aún no hay cuentas.</p>
+        <details class="audit">
+          <summary>Historial de cambios</summary>
+          <ul id="audit"></ul>
+        </details>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <h2>⛏️ Minecraft</h2>
+          <span class="muted" id="packs-summary"></span>
+        </div>
+        <p class="muted">Packs compartidos entre amigos y sus mundos del grupo (lo único que ocupa disco: los mods se bajan de Modrinth).</p>
+        <table class="versions packs">
+          <thead>
+            <tr>
+              <th>Pack</th>
+              <th>Miembros</th>
+              <th>Mundo del grupo</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="packs"></tbody>
+        </table>
+        <p id="packs-empty" class="muted" hidden>Aún no hay packs compartidos.</p>
+      </section>
+
+      <section class="card">
+        <details class="versions-box">
+        <summary><h2>🗂️ Versiones</h2><span class="muted" id="versions-count"></span></summary>
+        <table class="versions">
+          <thead>
+            <tr>
+              <th>Versión</th>
+              <th>Fecha</th>
+              <th>Archivos</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="versions"></tbody>
+        </table>
+        <p id="empty" class="muted" hidden>Aún no hay versiones publicadas.</p>
+        </details>
+      </section>
+    </main>
+
+    <!-- Pedir un dato (contraseña temporal, nombre nuevo) -->
+    <dialog id="ask" class="card ask">
+      <form method="dialog">
+        <h2 id="ask-title"></h2>
+        <p id="ask-text" class="muted"></p>
+        <input id="ask-input" autocomplete="off" spellcheck="false" required />
+        <p id="ask-error" class="error" hidden></p>
+        <div class="ask-buttons">
+          <button class="btn ghost" value="cancel" formnovalidate>Cancelar</button>
+          <button class="btn primary" value="ok">Guardar</button>
+        </div>
+      </form>
+    </dialog>
+
+    <!-- Ficha completa de una cuenta (se rellena desde admin.js) -->
+    <dialog id="acct" class="card ask acct">
+      <div id="acct-body"></div>
+      <div class="ask-buttons">
+        <button class="btn ghost" id="acct-close">Cerrar</button>
+      </div>
+    </dialog>
+
+    <!-- Recortar la foto de una cuenta -->
+    <dialog id="crop" class="card ask">
+      <h2 id="crop-title">Recortar la foto</h2>
+      <p class="muted">Arrástrala para colocarla y acércala con la rueda o la barra. Lo de dentro del círculo es la foto.</p>
+      <div id="crop-view" class="crop-view">
+        <img id="crop-img" alt="" draggable="false" />
+        <span class="crop-mask"></span>
+      </div>
+      <input id="crop-zoom" class="crop-zoom" type="range" min="1" max="4" step="0.01" value="1" aria-label="Zoom" />
+      <p id="crop-error" class="error" hidden></p>
+      <div class="ask-buttons">
+        <button class="btn ghost" id="crop-cancel">Cancelar</button>
+        <button class="btn primary" id="crop-save">Guardar foto</button>
+      </div>
+    </dialog>
+    <input id="photo-file" type="file" accept="image/png,image/jpeg,image/webp,image/gif" hidden />
+
+    <div id="toast" class="toast" hidden></div>
+    <script src="admin.js" type="module"></script>
+  </body>
+</html>
