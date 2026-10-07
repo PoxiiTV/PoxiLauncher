@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.6.0
+
+### 🇪🇸 Español
+
+- 🌐 **Nueva casa: poxilauncher.com.** PoxiLauncher ya tiene su propia web, y la app usa sus direcciones nuevas. Los enlaces de invitación ahora son `poxilauncher.com/i/…`.
+- 📜 **Privacidad y términos en la web**, en español o en inglés según el idioma de la app.
+
+### 🇬🇧 English
+
+- 🌐 **New home: poxilauncher.com.** PoxiLauncher now has its own website, and the app uses its new addresses. Invite links now look like `poxilauncher.com/i/…`.
+- 📜 **Privacy and terms on the website**, in Spanish or English depending on the app language.
+
 ## 0.5.0
 
 ### 🇪🇸 Español

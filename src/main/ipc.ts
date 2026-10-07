@@ -30,7 +30,7 @@ import {
 } from './account/service'
 import { answerPack, applyPack, installFromCloud, joinFriend, leavePack, removeCloudPack, rollbackPack, sharePack } from './minecraft/share'
 import { openAsUser } from './system/browser'
-import { UPDATE_BASE } from './net'
+import { WEB_BASE } from './net'
 import { acceptInvite, createInvite, previewInvite, revokeInvite, takeInvite } from './invites'
 import { serverCommand, serverLog, setupServer, startHosting, stopHosting } from './minecraft/hosting'
 import {
@@ -357,7 +357,12 @@ export const handlers: Impl = {
   'mc:serverOpenFolder': (i) => openServerFolder(mcId.parse(i)),
   'mc:playOwnServer': (i) => playOwnServer(mcId.parse(i)),
   'app:quit': () => quitNow(),
-  'app:openLegal': (page) => openAsUser(`${UPDATE_BASE}/${z.enum(['privacidad', 'terminos']).parse(page)}`),
+  // En la web, en el idioma de la app
+  'app:openLegal': (page) => {
+    const p = z.enum(['privacidad', 'terminos']).parse(page)
+    const en = getSettings().lang === 'en'
+    return openAsUser(`${WEB_BASE}/${en ? `en/${p === 'privacidad' ? 'privacy' : 'terms'}` : p}/`)
+  },
   'app:openLink': (url) => openAsUser(z.string().max(2000).regex(/^https:\/\/[^\s"'<>]+$/).parse(url)),
   // Siempre la ventana de la app (con "la enfocada", si el foco estaba en otro programa el botón no hacía nada)
   'window:minimize': () => appWindow()?.minimize(),

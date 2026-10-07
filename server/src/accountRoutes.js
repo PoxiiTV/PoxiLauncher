@@ -15,7 +15,7 @@ const bad = (res, msg = 'Datos no válidos', status = 400) => res.status(status)
 const firstIssue = (r) => r.error?.issues?.[0]?.message ?? 'Datos no válidos'
 
 /** Versión de los términos y la privacidad que se aceptan al crear la cuenta (cambiarla si cambian los documentos) */
-export const TERMS_VERSION = '2026-10-07'
+export const TERMS_VERSION = '2026-10-07.2'
 const credentials = z
   .object({
     username: usernameSchema,

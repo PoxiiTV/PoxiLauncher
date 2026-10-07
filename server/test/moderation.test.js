@@ -1,5 +1,5 @@
 // Bloquear, denunciar y revisarlo desde el panel, de punta a punta (arranca el servidor de verdad). Y las páginas de
-// privacidad y términos que enlaza la app.
+// redirecciones a la privacidad y los términos de la web.
 import { test, before, after } from 'node:test'
 import assert from 'node:assert/strict'
 import { spawn } from 'node:child_process'
@@ -140,15 +140,11 @@ test('denunciar: copia del mensaje, nada falso y el panel lo resuelve', async ()
   assert.equal(done.resolved.find((r) => r.kind === 'message').snapshot.message.text, 'mensaje feo')
 })
 
-test('privacidad y términos: públicas, con su estilo y sin estilos dentro (CSP)', async () => {
+test('privacidad y términos: viven en la web (las apps viejas llegan por redirección)', async () => {
   for (const page of ['privacidad', 'terminos']) {
-    const res = await fetch(`${BASE}/${page}`)
-    assert.equal(res.status, 200)
-    const html = await res.text()
-    assert.match(html, /14 años/)
-    assert.match(html, /alexissjuarezz10@gmail\.com/)
-    assert.doesNotMatch(html, /<style|style="/)
+    const res = await fetch(`${BASE}/${page}`, { redirect: 'manual' })
+    assert.equal(res.status, 301)
+    assert.equal(res.headers.get('location'), `https://poxilauncher.com/${page}/`)
   }
-  assert.equal((await fetch(`${BASE}/legal/legal.css`)).status, 200)
-  assert.equal((await fetch(`${BASE}/legal/`)).status, 404)
+  assert.equal((await fetch(`${BASE}/legal/legal.css`)).status, 404)
 })

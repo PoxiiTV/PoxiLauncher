@@ -9,6 +9,8 @@ import { z } from 'zod'
 export const REASONS = ['spam', 'harassment', 'inappropriate', 'impersonation', 'other']
 const MAX_OPEN_PER_REPORTER = 20
 const KEEP_RESOLVED = 500
+/** Las resueltas se borran a los 12 meses (lo dice la política de privacidad) */
+const RESOLVED_DAYS = 365
 
 export const reportBody = z
   .object({
@@ -35,6 +37,12 @@ export function createReports(dataDir, accounts, chat) {
     })
     return saving
   }
+  /** Fuera las resueltas de más de 12 meses y, si hay muchas, las más viejas */
+  const purge = () => {
+    const done = Object.values(reports).filter((x) => x.resolved).sort((a, b) => b.resolved.at - a.resolved.at)
+    for (const old of done.slice(KEEP_RESOLVED)) delete reports[old.id]
+    for (const old of done) if (old.resolved.at < Date.now() - RESOLVED_DAYS * 86_400_000) delete reports[old.id]
+  }
   const who = (id) => ({ id, username: accounts.user(id)?.username ?? '(cuenta borrada)' })
   /** Solo lo que se ve de un mensaje (sin reacciones ni respuestas) */
   const copy = (m) => ({
@@ -55,6 +63,7 @@ export function createReports(dataDir, accounts, chat) {
       } catch {
         reports = {}
       }
+      purge()
     },
 
     async create(reporter, b) {
@@ -95,8 +104,7 @@ export function createReports(dataDir, accounts, chat) {
       const r = reports[id]
       if (!r) return null
       r.resolved = { at: Date.now(), action }
-      const done = Object.values(reports).filter((x) => x.resolved).sort((a, b) => b.resolved.at - a.resolved.at)
-      for (const old of done.slice(KEEP_RESOLVED)) delete reports[old.id]
+      purge()
       await save()
       return r
     }

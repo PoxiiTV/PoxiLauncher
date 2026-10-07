@@ -3,10 +3,10 @@ import type { InviteLink, InvitePreview, InviteResult } from '@shared/types'
 import { accountCall, getAccount, signedIn, syncNow } from './account/service'
 import { joinFriend, installFromCloud, sharePack } from './minecraft/share'
 import { getMinecraft } from './minecraft/service'
-import { serverFetch, UPDATE_BASE } from './net'
+import { serverFetch, WEB_BASE } from './net'
 import { emit } from './events'
 
-// Enlaces de invitación (<servidor>/i/<código>): la página abre poxilauncher://invite/<código>, Windows
+// Enlaces de invitación (<web>/i/<código>): la página abre poxilauncher://invite/<código>, Windows
 // abre la app (o se lo pasa a la que ya está abierta) y aquí se acepta: amigos, el pack instalado y, si quien invita
 // está jugando, directo a su partida.
 
@@ -39,7 +39,7 @@ export function takeInvite(): string | null {
   return code
 }
 
-const view = (i: Omit<InviteLink, 'url'>): InviteLink => ({ ...i, url: `${UPDATE_BASE}/i/${i.code}` })
+const view = (i: Omit<InviteLink, 'url'>): InviteLink => ({ ...i, url: `${WEB_BASE}/i/${i.code}` })
 
 /** Tu enlace: de amistad (sin instancia) o de una instancia (la comparte en un pack si aún no lo estaba) */
 export async function createInvite(instanceId: string | null): Promise<InviteLink | null> {

@@ -71,7 +71,11 @@ test('enlace de amistad: se ve sin cuenta, hace amigos y se puede anular', async
   assert.equal((await json('POST', '/api/u/invites', { pack: null }, ana.access)).body.invite.code, made.code)
 
   // La página (sin cuenta) y lo que enseña
-  assert.equal((await fetch(`${BASE}/i/${made.code}`)).status, 200)
+  // La página vive en la web: el enlace viejo redirige allí
+  const page = await fetch(`${BASE}/i/${made.code}`, { redirect: 'manual' })
+  assert.equal(page.status, 301)
+  assert.equal(page.headers.get('location'), `https://poxilauncher.com/i/${made.code}`)
+  assert.equal((await fetch(`${BASE}/i/nada`, { redirect: 'manual' })).status, 404)
   const seen = await json('GET', `/api/invites/${made.code}`)
   assert.equal(seen.body.by.username, 'ana')
   assert.equal(seen.body.pack, null)

@@ -166,6 +166,7 @@ Variables del `.env` (no se sube nunca al repo):
 |---|---|
 | `MAIN_VITE_SERVER_URL` | Servidor de cuentas, amigos, chat, packs y túnel |
 | `MAIN_VITE_UPDATE_URL` | Canal de actualizaciones (**sin** `/` al final) |
+| `MAIN_VITE_WEB_URL` | La web: privacidad, términos y la página de los enlaces de invitación |
 | `MAIN_VITE_MSA_CLIENT_ID` | Client ID de Azure para el inicio de sesión de Microsoft |
 | `MAIN_VITE_DISCORD_APP_ID` | Aplicación de Discord para la presencia |
 | `POXI_DEPLOY_TOKEN` | Token para publicar versiones con `publish.bat` |

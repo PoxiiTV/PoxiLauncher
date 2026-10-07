@@ -10,6 +10,8 @@ import { once } from 'node:events'
 /** Nuestro servidor (cuentas, amigos, chat, packs y túnel): la dirección base. Las actualizaciones van aparte (MAIN_VITE_UPDATE_URL) */
 export const UPDATE_BASE = ((import.meta.env.MAIN_VITE_SERVER_URL as string | undefined) ?? '').replace(/\/+$/, '')
 const UPDATE_HOST = UPDATE_BASE ? new URL(UPDATE_BASE).hostname : ''
+/** La web: privacidad, términos y la página de los enlaces de invitación */
+export const WEB_BASE = ((import.meta.env.MAIN_VITE_WEB_URL as string | undefined) ?? 'https://poxilauncher.com').replace(/\/+$/, '')
 
 const ALLOWED = [
   // Minecraft: cuenta Microsoft (Microsoft, Xbox y Mojang) y skins. Las descargas del juego las hace XMCL

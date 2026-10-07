@@ -224,18 +224,16 @@ api.post('/reports/:id/resolve', requireAuth, async (req, res) => {
   res.json({ ok: true })
 })
 
-// ——— Privacidad y términos (los enlaza la app al crear la cuenta y en Acerca de) ———
-for (const page of ['privacidad', 'terminos'])
-  app.get(`/${page}`, (_req, res) => res.sendFile(join(here, '..', 'public', 'legal', `${page}.html`)))
-// Enlace de invitación: la página (para abrir la app o descargarla) y lo que enseña (sin cuenta, con límite)
+// ——— Privacidad, términos y enlaces de invitación: viven en la web ———
+// Las apps de antes de la 0.6.0 (y los enlaces que ya se compartieron) apuntan aquí: se mandan a la web
+for (const page of ['privacidad', 'terminos']) app.get(`/${page}`, (_req, res) => res.redirect(301, `${config.WEB_URL}/${page}/`))
+app.get('/i/:code', (req, res) => (CODE.test(req.params.code) ? res.redirect(301, `${config.WEB_URL}/i/${req.params.code}`) : res.status(404).end()))
+// Lo que enseña un enlace (sin cuenta, con límite): lo pide la página de la web
 const inviteLimiter = limiter(15 * 60 * 1000, 120)
-app.get('/i/:code', (_req, res) => res.sendFile(join(here, '..', 'public', 'invite', 'index.html')))
-app.use('/invite', express.static(join(here, '..', 'public', 'invite'), { dotfiles: 'deny', index: false }))
 api.get('/invites/:code', inviteLimiter, (req, res) => {
   const p = CODE.test(req.params.code) ? invites.preview(req.params.code) : null
   return p ? res.json(p) : res.status(404).json({ error: 'Esta invitación ya no vale' })
 })
-app.use('/legal', express.static(join(here, '..', 'public', 'legal'), { dotfiles: 'deny', index: false }))
 
 app.use('/admin', express.static(join(here, '..', 'public', 'admin'), { index: 'index.html', dotfiles: 'deny' }))
 

@@ -12,6 +12,12 @@ const schema = z.object({
   DEPLOY_TOKEN: z.string().min(32),
   /** Clave de KLIPY (GIFs y stickers del chat). Sin ella, el chat no tiene buscador de GIFs */
   KLIPY_API_KEY: z.string().regex(/^[\w-]{10,200}$/).optional(),
+  /** La web (privacidad, términos y la página de los enlaces de invitación), sin «/» final */
+  WEB_URL: z
+    .string()
+    .url()
+    .default('https://poxilauncher.com')
+    .transform((u) => u.replace(/\/+$/, '')),
   /** Tamaño máximo del mundo compartido de cada pack de Minecraft (MB) */
   MAX_WORLD_MB: z.coerce.number().int().min(10).max(4096).default(500),
   /** true en producción (HTTPS vía Cloudflare): cookies solo por HTTPS */
