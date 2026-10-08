@@ -12,3 +12,7 @@ resources/bin/
 Thumbs.db
 research_notes/
 reports/
+
+# Vídeos promocionales (pesan; se regeneran con marketing/video/render.bat)
+marketing/video/*.mp4
+marketing/video/fotogramas/

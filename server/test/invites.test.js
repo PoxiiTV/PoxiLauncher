@@ -110,7 +110,7 @@ test('enlace de un pack: entra en el pack; bloqueados y quien no está dentro, n
   assert.equal((await json('POST', '/api/u/invites', { pack: pack.id }, eva.access)).status, 404)
   const inv = (await json('POST', '/api/u/invites', { pack: pack.id }, ana.access)).body.invite
   const seen = (await json('GET', `/api/invites/${inv.code}`)).body
-  assert.deepEqual(seen.pack, { name: 'Survival del grupo', mc: '1.21.8', loader: 'fabric', icon: null, mods: 2, members: 1, full: false })
+  assert.deepEqual(seen.pack, { id: pack.id, name: 'Survival del grupo', mc: '1.21.8', loader: 'fabric', icon: null, mods: 2, members: 1, full: false })
 
   // Eva entra: amiga de Ana y dentro del pack, con sus mods
   const ok = (await json('POST', `/api/u/invites/${inv.code}/accept`, null, eva.access)).body

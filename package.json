@@ -1,7 +1,7 @@
 {
   "name": "poxilauncher",
   "productName": "PoxiLauncher",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Launcher de Minecraft para jugar con tus amigos: instancias, mods sincronizados e invitaciones",
   "author": "Poxi",
   "main": "./out/main/index.js",

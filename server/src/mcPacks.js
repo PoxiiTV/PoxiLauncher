@@ -149,7 +149,7 @@ export function createMcPacks(dataDir, accounts, live = { notify: () => undefine
     summary(id, member) {
       const p = packs[id]
       if (!p || !p.members.includes(member)) return null
-      return { name: p.name, mc: p.mc, loader: p.loader, icon: p.icon ?? null, mods: p.items.length, members: alive(p.members).length, full: alive(p.members).length + alive(p.invited).length >= MAX_PACK_MEMBERS }
+      return { id: p.id, name: p.name, mc: p.mc, loader: p.loader, icon: p.icon ?? null, mods: p.items.length, members: alive(p.members).length, full: alive(p.members).length + alive(p.invited).length >= MAX_PACK_MEMBERS }
     },
 
     /** ¿Está dentro? (para crear un enlace de su pack) */

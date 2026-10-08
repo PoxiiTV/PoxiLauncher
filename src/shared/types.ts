@@ -129,7 +129,7 @@ export interface InviteLink {
 /** Lo que enseña un enlace antes de aceptarlo */
 export interface InvitePreview {
   by: { id: string; username: string; displayName: string | null }
-  pack: { name: string; mc: string; loader: McLoader; icon: string | null; mods: number; members: number; full: boolean } | null
+  pack: { id: string; name: string; mc: string; loader: McLoader; icon: string | null; mods: number; members: number; full: boolean } | null
   expires: number
 }
 /** Al aceptar: con quién (amigos ya), la instancia del pack y si se entró directo a su partida */

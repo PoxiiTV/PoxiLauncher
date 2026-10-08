@@ -83,6 +83,11 @@ function InviteOpen({ code }: { code: string }): React.JSX.Element {
   const [busy, setBusy] = useState(false)
   const [signIn, setSignIn] = useState<'in' | 'up' | null>(null)
   const close = (): void => setState({ invite: null })
+  // Antes de ofrecer «Unirme»: ¿es tuya, ya estás en ese pack o ya sois amigos?
+  const packId = preview && preview !== 'offline' ? preview.pack?.id : undefined
+  const inPack = useStore((s) => !!packId && !!s.mc?.packs.some((p) => p.id === packId && !p.invited))
+  const packInstance = useStore((s) => (packId ? s.mc?.instances.find((i) => i.packId === packId)?.id : undefined))
+  const isFriend = useStore((s) => preview && preview !== 'offline' && s.account.friends.some((f) => f.id === preview.by.id))
 
   useEffect(() => {
     void invoke('invite:preview', code)
@@ -106,17 +111,39 @@ function InviteOpen({ code }: { code: string }): React.JSX.Element {
 
   const ok = preview && preview !== 'offline' ? preview : null
   const name = ok ? ok.by.displayName || ok.by.username : ''
+  // Con sesión: tu propia invitación, ya estás en ese pack (con su instancia en este PC) o ya sois amigos (sin pack)
+  const state = !ok || !user ? null : ok.by.id === user.id ? 'mine' : ok.pack ? (inPack && packInstance ? 'inPack' : null) : isFriend ? 'friends' : null
+  const goInstance = (): void => {
+    close()
+    if (packInstance) navigate({ name: 'mcInstance', id: packInstance })
+  }
   return (
     <Modal
       className="mc-modal"
-      title={ok ? t('invite.from', { name }) : t('invite.title')}
+      title={state === 'mine' ? t('invite.mineTitle') : state === 'inPack' ? t('invite.inPackTitle') : ok ? t('invite.from', { name }) : t('invite.title')}
       onClose={busy ? () => undefined : close}
       actions={
         <>
           <button className="mc-btn" disabled={busy} onClick={close}>
-            {ok ? t('invite.notNow') : t('common.close')}
+            {ok && !state ? t('invite.notNow') : t('common.close')}
           </button>
-          {ok && user && (
+          {(state === 'mine' || state === 'inPack') && packInstance && (
+            <button className="mc-btn mc-btn-emerald" onClick={goInstance}>
+              <Box size={16} /> {t('invite.goInstance')}
+            </button>
+          )}
+          {state === 'friends' && ok && (
+            <button
+              className="mc-btn mc-btn-emerald"
+              onClick={() => {
+                close()
+                navigate({ name: 'friend', id: ok.by.id })
+              }}
+            >
+              <UserPlus size={16} /> {t('invite.seeProfile')}
+            </button>
+          )}
+          {ok && user && !state && (
             <button className="mc-btn mc-btn-emerald" disabled={busy} onClick={() => void join()}>
               {busy ? <Loader2 size={16} className="spin" /> : ok.pack ? <Box size={16} /> : <UserPlus size={16} />} {t(ok.pack ? 'invite.join' : 'invite.addFriend')}
             </button>
@@ -145,8 +172,16 @@ function InviteOpen({ code }: { code: string }): React.JSX.Element {
               </div>
             </div>
           ) : null}
-          <p>{t(ok.pack ? 'invite.whatPack' : 'invite.whatFriend', { name })}</p>
-          {ok.pack?.full && <p className="mc-warn">{t('invite.full')}</p>}
+          {state === 'mine' ? (
+            <p>{t(ok.pack ? 'invite.minePack' : 'invite.mineFriend')}</p>
+          ) : state === 'inPack' ? (
+            <p>{t('invite.inPack', { name })}</p>
+          ) : state === 'friends' ? (
+            <p>{t('invite.alreadyFriends', { name })}</p>
+          ) : (
+            <p>{t(ok.pack ? 'invite.whatPack' : 'invite.whatFriend', { name })}</p>
+          )}
+          {ok.pack?.full && !state && <p className="mc-warn">{t('invite.full')}</p>}
           {busy && ok.pack && <p className="mc-hint">{t('invite.installing')}</p>}
           {!user && (
             <div className="inv-signin">

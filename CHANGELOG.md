@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.6.1
+
+### 🇪🇸 Español
+
+- 🌍 **Enlaces de invitación en tu idioma**: si tienes PoxiLauncher en inglés, el enlace abre la página en inglés (`poxilauncher.com/en/i/…`). En la página puedes cambiar de idioma sin perder la invitación.
+- 🙋 **Abrir tu propia invitación** ya no te ofrece unirte: te dice que es tuya y te lleva a la instancia. Si ya estás en ese pack, te dice «Ya estás dentro», y si ya sois amigos, te lleva a su perfil.
+
+### 🇬🇧 English
+
+- 🌍 **Invite links in your language**: if PoxiLauncher is in English, the link opens the page in English (`poxilauncher.com/en/i/…`). You can switch language on the page without losing the invite.
+- 🙋 **Opening your own invite** no longer offers to join: it tells you it's yours and takes you to the instance. If you're already in that pack it says «You're already in», and if you're already friends it takes you to their profile.
+
 ## 0.6.0
 
 ### 🇪🇸 Español

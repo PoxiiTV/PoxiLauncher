@@ -1,6 +1,14 @@
 const es = {
   invite: {
     title: 'Enlace de invitación',
+    mineTitle: 'Es tu invitación',
+    minePack: 'Este enlace lo has creado tú para tu pack. Pásaselo a tus amigos: quien lo abra se hace tu amigo y entra en el pack.',
+    mineFriend: 'Este enlace lo has creado tú. Pásaselo a quien quieras: quien lo abra se hace tu amigo.',
+    inPackTitle: 'Ya estás dentro',
+    inPack: 'Ya estás en este pack con {name}: tienes la instancia en este PC.',
+    alreadyFriends: 'Ya eres amigo de {name}: no hace falta aceptar nada.',
+    goInstance: 'Ir a la instancia',
+    seeProfile: 'Ver su perfil',
     helpPack: 'Pásalo por Discord o WhatsApp: quien lo abra se hace tu amigo y entra en este pack con todos sus mods.',
     helpFriend: 'Pásalo por Discord o WhatsApp: quien lo abra se hace tu amigo al momento.',
     create: 'Crear enlace',

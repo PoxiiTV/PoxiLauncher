@@ -3,6 +3,14 @@ import type { Dict } from './es'
 const en: Dict = {
   invite: {
     title: 'Invite link',
+    mineTitle: "It's your invite",
+    minePack: 'You created this link for your pack. Send it to your friends: whoever opens it becomes your friend and joins the pack.',
+    mineFriend: 'You created this link. Send it to anyone: whoever opens it becomes your friend.',
+    inPackTitle: "You're already in",
+    inPack: "You're already in this pack with {name}: the instance is on this PC.",
+    alreadyFriends: "You're already friends with {name}: nothing to accept.",
+    goInstance: 'Go to the instance',
+    seeProfile: 'See their profile',
     helpPack: "Send it on Discord or WhatsApp: whoever opens it becomes your friend and joins this pack with all its mods.",
     helpFriend: 'Send it on Discord or WhatsApp: whoever opens it becomes your friend right away.',
     create: 'Create link',

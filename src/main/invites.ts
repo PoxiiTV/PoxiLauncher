@@ -5,6 +5,7 @@ import { joinFriend, installFromCloud, sharePack } from './minecraft/share'
 import { getMinecraft } from './minecraft/service'
 import { serverFetch, WEB_BASE } from './net'
 import { emit } from './events'
+import { getSettings } from './settings'
 
 // Enlaces de invitación (<web>/i/<código>): la página abre poxilauncher://invite/<código>, Windows
 // abre la app (o se lo pasa a la que ya está abierta) y aquí se acepta: amigos, el pack instalado y, si quien invita
@@ -39,7 +40,8 @@ export function takeInvite(): string | null {
   return code
 }
 
-const view = (i: Omit<InviteLink, 'url'>): InviteLink => ({ ...i, url: `${WEB_BASE}/i/${i.code}` })
+/** El enlace, en el idioma del launcher: la página de la invitación sale en ese idioma (/en/i/… en inglés) */
+const view = (i: Omit<InviteLink, 'url'>): InviteLink => ({ ...i, url: `${WEB_BASE}${getSettings().lang === 'en' ? '/en' : ''}/i/${i.code}` })
 
 /** Tu enlace: de amistad (sin instancia) o de una instancia (la comparte en un pack si aún no lo estaba) */
 export async function createInvite(instanceId: string | null): Promise<InviteLink | null> {
