@@ -233,6 +233,8 @@ export function Conversation({ chat }: { chat: ChatInfo }): React.JSX.Element {
   const meUser = useStore((s) => s.account.user)!
   const me = meUser.id
   const style = useStore((s) => s.settings?.chatStyle)
+  // Fechas en el idioma de la app (no en el de Windows)
+  const locale = useStore((s) => (s.settings?.lang === 'en' ? 'en-GB' : 'es-ES'))
   const muted = useStore((s) => s.settings?.chatMuted.includes(chat.id) ?? false)
   const mutedList = useStore((s) => s.settings?.chatMuted ?? [])
   const members = useMembers(chat)
@@ -621,7 +623,7 @@ export function Conversation({ chat }: { chat: ChatInfo }): React.JSX.Element {
                 {day && (
                   <div className="cv-day">
                     <span>
-                      {new Date(m.at).toLocaleDateString(undefined, {
+                      {new Date(m.at).toLocaleDateString(locale, {
                         weekday: 'long',
                         day: 'numeric',
                         month: 'long'

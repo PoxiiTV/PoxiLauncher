@@ -4,7 +4,7 @@ import { invoke } from '../api'
 import { goBack, useStore } from '../store'
 import { useT } from '../i18n'
 import { Logo } from './Logo'
-import grassIcon from '../assets/mc/grass-block.png'
+import logoIcon from '../assets/logo.svg'
 import eggSound from '../assets/easter/idle2.mp3'
 import eggEmoji from '../assets/easter/emoji.png'
 import { Modal } from './Overlays'
@@ -21,12 +21,12 @@ export function TitleBar(): React.JSX.Element {
         <span>
           Poxi<b>Launcher</b>
         </span>
-        {/* Con el estilo Minecraft (lo cambia el CSS de la zona): bloque de hierba y la letra de Minecraft */}
+        {/* Con el estilo Minecraft (lo cambia el CSS de la zona): el logo y la letra de Minecraft */}
         <span className="brand-mc" aria-hidden>
-          {/* Easter egg: el bloque se puede pulsar (la barra de arriba sirve para arrastrar la ventana: él no) */}
+          {/* Easter egg: el logo se puede pulsar (la barra de arriba sirve para arrastrar la ventana: él no) */}
           <img
             className="no-drag brand-egg"
-            src={grassIcon}
+            src={logoIcon}
             alt=""
             draggable={false}
             onClick={() => {

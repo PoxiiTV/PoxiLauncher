@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.6.2
+
+### 🇪🇸 Español
+
+- 🎨 **Nuevo icono**: PoxiLauncher estrena su propia «P», la misma de la web, en Windows (escritorio, barra de tareas, menú Inicio) y dentro de la app.
+- 🎮 **Discord**: tus amigos ahora ven «Jugando a **PoxiLauncher**», con su logo.
+- 🌍 **Chat**: la fecha que separa los mensajes de cada día sale en el idioma de la app, no en el de Windows.
+
+### 🇬🇧 English
+
+- 🎨 **New icon**: PoxiLauncher gets its own «P», the same as on the website, on Windows (desktop, taskbar, Start menu) and inside the app.
+- 🎮 **Discord**: your friends now see “Playing **PoxiLauncher**”, with its logo.
+- 🌍 **Chat**: the date that separates each day’s messages follows the app’s language, not Windows’.
+
 ## 0.6.1
 
 ### 🇪🇸 Español
