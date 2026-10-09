@@ -1,0 +1,55 @@
+{
+  "profiles": {
+    "fab": {
+      "name": "Mis mods",
+      "type": "custom",
+      "lastVersionId": "fabric-loader-0.16.5-1.21.1",
+      "lastUsed": "2025-10-24T07:31:25.655Z"
+    },
+    "rel": {
+      "name": "",
+      "type": "latest-release",
+      "lastVersionId": "latest-release",
+      "lastUsed": "2026-09-22T16:06:38.049Z"
+    },
+    "snap": {
+      "name": "",
+      "type": "latest-snapshot",
+      "lastVersionId": "latest-snapshot",
+      "lastUsed": "1970-01-01T00:00:00.000Z"
+    },
+    "forge": {
+      "name": "Forge viejo",
+      "type": "custom",
+      "lastVersionId": "1.20.1-forge-47.2.0",
+      "lastUsed": "2025-01-01T00:00:00.000Z"
+    },
+    "of": {
+      "name": "OptiFine",
+      "type": "custom",
+      "lastVersionId": "1.20.1-OptiFine_HD_U_I6",
+      "lastUsed": "2025-01-01T00:00:00.000Z"
+    },
+    "evil": {
+      "name": "Rara",
+      "type": "custom",
+      "lastVersionId": "..\\..\\x",
+      "gameDir": "..\\..\\Windows",
+      "lastUsed": "2025-01-01T00:00:00.000Z"
+    },
+    "fab10": {
+      "name": "",
+      "type": "custom",
+      "lastVersionId": "fabric-loader-0.17.3-1.21.10",
+      "lastUsed": "2025-10-30T13:29:00+0100"
+    },
+    "v20": {
+      "name": "Vanilla vieja",
+      "type": "custom",
+      "lastVersionId": "1.20.4",
+      "lastUsed": "2024-03-01T10:00:00.000Z"
+    }
+  },
+  "settings": {},
+  "version": 3
+}

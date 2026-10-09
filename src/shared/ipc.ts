@@ -11,6 +11,7 @@ import type {
   McOptimizePlan,
   McIssue,
   McHit,
+  McImportable,
   McLoader,
   McProjectVersion,
   McServerConfig,
@@ -167,6 +168,10 @@ export interface Handlers {
   /** Modpacks: importar un .mrpack del disco, instalar uno de Modrinth, exportar la instancia o su pack de servidor */
   'mc:importPack': () => { ok: boolean; id?: string; error?: McError }
   'mc:installModpack': (projectId: string, versionId?: string) => { ok: boolean; id?: string; error?: McError }
+  /** Traer instancias de otros launchers: las que hay en este PC, y traer las elegidas (con o sin sus mundos) */
+  'mc:importScan': () => McImportable[]
+  /** `disabled`: mods de Modrinth que no son para su versión o su loader, que se han dejado desactivados */
+  'mc:importRun': (keys: string[], worlds: boolean) => { key: string; id?: string; error?: McError; disabled?: string[] }[]
   'mc:exportPack': (id: string) => { ok: boolean }
   'mc:exportServer': (id: string) => { ok: boolean }
   /** Explicador de crasheos: aplicar el arreglo de una causa, o descartar el aviso */

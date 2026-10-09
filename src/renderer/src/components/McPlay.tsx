@@ -51,7 +51,7 @@ export function McPlay({ inst, mc, big = false }: { inst: McInstance; mc: McStat
         <div className="mc-bar">
           <div className={`mc-bar-fill ${busy.total > 0 ? '' : 'indeterminate'}`} style={{ width: busy.total > 0 ? `${pct * 100}%` : undefined }} />
         </div>
-        {busy.stage !== 'launching' && busy.stage !== 'modpack' && busy.stage !== 'backup' && (
+        {busy.stage !== 'launching' && busy.stage !== 'modpack' && busy.stage !== 'backup' && busy.stage !== 'import' && (
           <button className="mc-btn mc-btn-sm" onClick={() => void invoke('mc:cancel')}>
             <X size={14} /> {t('mc.cancel')}
           </button>

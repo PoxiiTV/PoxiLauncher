@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.7.0
+
+### 🇪🇸 Español
+
+- 📦 **Trae tus instancias**: PoxiLauncher encuentra solo tus instancias del **launcher oficial de Minecraft, CurseForge, Prism Launcher y Modrinth App** y te las trae con un clic: versión, loader, mods, resource packs, shaders, configuración, opciones, servidores y mundos. Tus launchers de antes no se tocan: todo se copia.
+- 🧠 **Sin crasheos al importar**: los mods que no son para la versión de una instancia se desactivan (no se borran) y te lo avisa. Y si varios perfiles del launcher oficial comparten carpeta, te lo dice para que no copies lo mismo dos veces.
+- 👋 La primera vez que abres PoxiLauncher te ofrece traerte lo que encuentre.
+- 🔢 Los tamaños (MB, GB) salen en el formato de tu idioma.
+- 🐛 Arreglado: una instancia que se estaba creando (al importar un `.mrpack`, por ejemplo) podía desaparecer a mitad.
+
+### 🇬🇧 English
+
+- 📦 **Bring your instances**: PoxiLauncher finds your instances from the **official Minecraft launcher, CurseForge, Prism Launcher and Modrinth App** and brings them over in one click: version, loader, mods, resource packs, shaders, config, options, servers and worlds. Your old launchers are left untouched: everything is copied.
+- 🧠 **No crashes after importing**: mods that aren’t made for an instance’s version are disabled (not deleted) and you’re told about it. And if several official launcher profiles share a folder, it lets you know so you don’t copy the same thing twice.
+- 👋 The first time you open PoxiLauncher, it offers to bring over whatever it finds.
+- 🔢 Sizes (MB, GB) follow your language’s number format.
+- 🐛 Fixed: an instance being created (for example when importing a `.mrpack`) could disappear halfway.
+
 ## 0.6.2
 
 ### 🇪🇸 Español

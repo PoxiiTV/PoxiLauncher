@@ -4,7 +4,7 @@ import { copyFileSync, cpSync, existsSync, mkdirSync, readdirSync, readFileSync,
 import { totalmem } from 'node:os'
 import { basename, join, resolve, sep } from 'node:path'
 import { MinecraftFolder, Version, type ResolvedVersion } from '@xmcl/core'
-import type { McAccount, McContent, McContentKind, McError, McInstance, McIssue, McLoader, McOptimizePlan, McSkinInfo, McState, McVersion, McWorld } from '@shared/types'
+import type { McAccount, McContent, McContentKind, McError, McImportable, McInstance, McIssue, McLoader, McOptimizePlan, McSkinInfo, McState, McVersion, McWorld } from '@shared/types'
 import { translate } from '@shared/i18n'
 import { emit } from '../events'
 import { getSettings } from '../settings'
@@ -19,6 +19,7 @@ import { allVersions, bestVersion, getProject, getProjects, getVersion, getVersi
 import { decideOptimize, PERF_MODS } from './optimize'
 import { findIssues } from './preflight'
 import { scan } from './content'
+import { copyInstance, curseforgeRoot, detect, incompatibleMods, type Found, type ImportRoots } from './importers'
 import { autoBackup, backupWorld, deleteBackup, listWorlds, restoreWorld, worldBackupsFolder, worldPath } from './worlds'
 import { downloadTo, UPDATE_BASE } from '../net'
 import { freshAccess, syncNow } from '../account/service'
@@ -27,7 +28,7 @@ import * as share from './share'
 import * as hosting from './hosting'
 import { getSkinInfo, resetSkin, setCape, uploadSkin, withTextures } from './skins'
 import { createHash } from 'node:crypto'
-import { readFile, rm } from 'node:fs/promises'
+import { readFile, rm, statfs } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { defaultRamMB, gameLanguage, instanceId, isValidPlayerName, lanPort, offlineUuid, withGameLanguage } from './rules'
 import { hideWhilePlaying, showAfterPlaying } from '../system'
@@ -70,7 +71,8 @@ let running: {
 let abort: AbortController | null = null
 
 const data = (): Saved => {
-  saved ??= readJson<Saved>(FILE(), {
+  if (saved) return saved
+  saved = readJson<Saved>(FILE(), {
     // Juegos, versiones e instancias: en tu carpeta de usuario, a la vista (son gigas)
     root: join(app.getPath('home'), 'PoxiLauncher'),
     instances: [],
@@ -79,7 +81,8 @@ const data = (): Saved => {
   })
   // De la primera beta (era una lista)
   if (Array.isArray(saved.installed)) saved.installed = {}
-  // Modpacks que se quedaron a medias (la app se cerró instalándolos): fuera, para que no parezcan instalados
+  // Modpacks (o instancias traídas) que se quedaron a medias porque la app se cerró: fuera, para que no parezcan
+  // instalados. Solo al cargar: después, `incomplete` es lo que se está instalando ahora mismo
   const broken = saved.instances.filter((i) => i.incomplete)
   if (broken.length) {
     for (const i of broken) rmSync(join(saved.root, 'instances', i.id), { recursive: true, force: true })
@@ -742,6 +745,122 @@ export async function importPackFile(): Promise<{ ok: boolean; id?: string; erro
   const r = await dialog.showOpenDialog(win, { properties: ['openFile'], filters: [{ name: 'Modrinth modpack', extensions: ['mrpack'] }] })
   if (r.canceled || !r.filePaths[0]) return { ok: false }
   return importFile(r.filePaths[0], null)
+}
+
+// ——— Traer instancias de otros launchers ———
+/** Dónde mira cada launcher. Pruebas sin empaquetar: POXI_IMPORT_ROOTS="official=…;curseforge=…;prism=…;modrinth=…" */
+async function importRoots(): Promise<ImportRoots> {
+  const test = !app.isPackaged && process.env.POXI_IMPORT_ROOTS
+  if (test) return Object.fromEntries(test.split(';').map((p) => [p.slice(0, p.indexOf('=')), p.slice(p.indexOf('=') + 1)]))
+  const appData = app.getPath('appData')
+  return {
+    official: join(appData, '.minecraft'),
+    curseforge: await curseforgeRoot(appData, app.getPath('home')),
+    prism: join(appData, 'PrismLauncher'),
+    modrinth: join(appData, 'ModrinthApp')
+  }
+}
+
+/** Lo que encontró la última búsqueda: la interfaz solo manda claves, nunca rutas */
+let importable = new Map<string, Found>()
+
+/** Sin nombre en su launcher (los perfiles del oficial): "Fabric 1.21.1" */
+const importName = (f: Found): string => f.name || `${translate(getSettings().lang, `mc.loader.${f.loader}`)} ${f.version}`.trim().slice(0, 40)
+
+export async function mcImportScan(): Promise<McImportable[]> {
+  const list = await detect(await importRoots())
+  importable = new Map(list.map((f) => [f.key, f]))
+  return list.map((f) => {
+    // La carpeta no sale del proceso principal
+    const { dir, shares, ...view } = f
+    void dir
+    const imported = data().instances.find((i) => i.importedFrom === f.key)?.id
+    const other = shares && importable.get(shares.key)
+    return { ...view, name: importName(f), ...(imported ? { imported } : {}), ...(other ? { shares: { name: importName(other), mods: shares.mods } } : {}) }
+  })
+}
+
+/** Trae las elegidas, una a una; devuelve cómo ha ido cada una */
+export async function mcImportRun(keys: string[], worlds: boolean): Promise<{ key: string; id?: string; error?: McError; disabled?: string[] }[]> {
+  if (busy || running) return keys.map((key) => ({ key, error: 'mc.busy' as const }))
+  const out: { key: string; id?: string; error?: McError; disabled?: string[] }[] = []
+  for (const key of keys) {
+    const f = importable.get(key)
+    out.push({ key, ...(f && !f.unsupported ? await importOne(f, worlds) : { error: 'mc.import.failed' as const }) })
+  }
+  return out
+}
+
+/** Una instancia nueva con la versión y el loader de la de fuera, y su contenido copiado (el original no se toca) */
+async function importOne(f: Found, worlds: boolean): Promise<{ id?: string; error?: McError; disabled?: string[] }> {
+  const total = f.size + (worlds ? f.worldsSize : 0)
+  mkdirSync(join(data().root, 'instances'), { recursive: true })
+  // Sin sitio, ni se empieza (con 200 MB de margen)
+  const free = await statfs(data().root).then((s) => s.bavail * s.bsize, () => Infinity)
+  if (free < total + 200 * 1024 ** 2) return { error: 'mc.import.noSpace' }
+  const inst: McInstance = {
+    id: instanceId(),
+    name: importName(f),
+    version: f.version,
+    loader: f.loader,
+    ...(f.loaderVersion ? { loaderVersion: f.loaderVersion } : {}),
+    createdAt: Date.now(),
+    lastPlayed: null,
+    playtime: 0,
+    ramMB: null,
+    // Sus opciones y servidores son los suyos: no se mezclan con los compartidos (se puede activar en sus ajustes)
+    shareSettings: false,
+    importedFrom: f.key,
+    incomplete: true
+  }
+  mkdirSync(instanceDir(inst.id), { recursive: true })
+  data().instances.unshift(inst)
+  save()
+  let done = 0
+  let last = 0
+  setBusy({ instanceId: inst.id, stage: 'import', done: 0, total })
+  try {
+    try {
+      await copyInstance(f, instanceDir(inst.id), worlds, (n) => {
+        done += n
+        // Como mucho 4 veces por segundo (cada aviso manda el estado entero a la interfaz)
+        if (Date.now() - last < 250) return
+        last = Date.now()
+        setBusy({ instanceId: inst.id, stage: 'import', done: Math.min(done, total), total })
+      })
+    } catch (e) {
+      const code = (e as NodeJS.ErrnoException).code
+      console.error('[minecraft] importar:', code ?? 'error')
+      // A medias no sirve: fuera la instancia
+      busy = null
+      deleteInstance(inst.id)
+      return { error: code === 'ENOSPC' ? 'mc.import.noSpace' : 'mc.import.failed' }
+    }
+    busy = null
+    delete inst.incomplete
+    save()
+    // Lista de contenido con los datos de Modrinth (por hash); lo que no está en Modrinth se queda igual, como puesto a mano
+    const items = await mods.listContent(ctxOf(inst.id)).catch(() => [] as McContent[])
+    const disabled = await disableIncompatible(inst, items)
+    return { id: inst.id, ...(disabled.length ? { disabled } : {}) }
+  } finally {
+    busy = null
+    push()
+  }
+}
+
+/**
+ * Mods de Modrinth que no son para la versión o el loader de la instancia (los perfiles del oficial comparten la
+ * carpeta de mods): se desactivan, nunca se borran, para que el juego no se cierre al abrirse. Devuelve sus nombres
+ */
+async function disableIncompatible(inst: McInstance, items: McContent[]): Promise<string[]> {
+  const ids = items.filter((c) => c.kind === 'mod' && c.enabled && c.versionId).map((c) => c.versionId!)
+  if (inst.loader === 'vanilla' || !ids.length) return []
+  const versions = new Map((await getVersions(ids).catch(() => [])).map((v) => [v.id, v]))
+  const bad = incompatibleMods(items, versions, inst.version, loadersFor(inst.loader))
+  if (!bad.length) return []
+  const r = await mods.toggleContent(ctxOf(inst.id), bad.map((c) => c.file), false)
+  return r.ok ? bad.map((c) => c.title) : []
 }
 
 /** Instalar un modpack de Modrinth (la versión dada o la mejor) */

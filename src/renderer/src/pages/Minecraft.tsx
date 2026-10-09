@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
-import { ChevronDown, FileUp, Loader2, Plus, Shirt, TriangleAlert, Users } from 'lucide-react'
+import { ChevronDown, FileUp, FolderInput, Loader2, Plus, Shirt, TriangleAlert, Users } from 'lucide-react'
 import '@fontsource-variable/archivo'
 import '@fontsource/archivo-black'
-import type { McInstance, McState } from '@shared/types'
+import type { McImportable, McInstance, McState } from '@shared/types'
 import { invoke } from '../api'
-import { navigate, setState, toast, useStore } from '../store'
+import { navigate, setState, toast, updateSettings, useStore } from '../store'
 import { useT } from '../i18n'
 import { formatDuration, formatRelative } from '../lib/format'
 import { McPlay, versionLabel } from '../components/McPlay'
@@ -13,6 +13,7 @@ import { SkinDialog } from '../components/McSkin'
 import { McInstanceMenu } from '../components/McInstanceMenu'
 import { McExplore } from '../components/McExplore'
 import { CloudPacks, PackInvites } from '../components/McShare'
+import { ImportDialog, ImportOffer } from '../components/McImport'
 import grass from '../assets/mc/grass.webp'
 import craftingTable from '../assets/mc/crafting-table.webp'
 import '../styles/minecraft.css'
@@ -20,7 +21,10 @@ import '../styles/minecraft.css'
 // Minecraft (beta): tus instancias (cada una con su versión, mundos y opciones) y tus cuentas. Estética de
 // inventario de Minecraft adaptada de Minepanel (github.com/Ketbome/minepanel).
 
-type Dialog = 'accounts' | 'create' | 'skin' | null
+type Dialog = 'accounts' | 'create' | 'skin' | 'import' | null
+
+/** La oferta de traer instancias de otros launchers se mira una vez por sesión */
+let offerChecked = false
 
 export function Minecraft(): React.JSX.Element {
   const t = useT()
@@ -28,6 +32,10 @@ export function Minecraft(): React.JSX.Element {
   const [dialog, setDialog] = useState<Dialog>(null)
   const [view, setView] = useState<'instances' | 'modpacks'>('instances')
   const [importing, setImporting] = useState(false)
+  const settings = useStore((s) => s.settings)
+  // Lo encontrado en otros launchers al ofrecerlo (la ventana de importar lo reutiliza sin volver a buscar)
+  const [offer, setOffer] = useState<McImportable[] | null>(null)
+  const [found, setFound] = useState<McImportable[] | undefined>(undefined)
 
   const importPack = async (): Promise<void> => {
     setImporting(true)
@@ -39,6 +47,19 @@ export function Minecraft(): React.JSX.Element {
   useEffect(() => {
     void invoke('mc:get').then((m) => setState({ mc: m }))
   }, [])
+
+  // La primera vez, si hay algo que traer de otros launchers, se ofrece. Una sola vez (y después de elegir idioma)
+  useEffect(() => {
+    if (offerChecked || !settings || settings.importOffered || settings.langAsked === false) return
+    offerChecked = true
+    void invoke('mc:importScan')
+      .then((list) => {
+        if (!list.some((i) => !i.unsupported && !i.imported && !i.shares)) return
+        setOffer(list)
+        void updateSettings({ importOffered: true })
+      })
+      .catch(() => undefined)
+  }, [settings])
 
   const active = mc?.accounts.find((a) => a.id === mc.activeAccount) ?? null
 
@@ -93,6 +114,15 @@ export function Minecraft(): React.JSX.Element {
           </button>
         </nav>
         <div className="mc-section-actions">
+          <button
+            className="mc-btn"
+            onClick={() => {
+              setFound(undefined)
+              setDialog('import')
+            }}
+          >
+            <FolderInput size={16} /> {t('mc.import.button')}
+          </button>
           <button className="mc-btn" disabled={importing} onClick={() => void importPack()}>
             {importing ? <Loader2 size={16} className="spin" /> : <FileUp size={16} />} {t('mc.modpacks.import')}
           </button>
@@ -126,6 +156,18 @@ export function Minecraft(): React.JSX.Element {
       {dialog === 'accounts' && mc && <AccountsDialog mc={mc} onClose={() => setDialog(null)} />}
       {dialog === 'create' && <CreateDialog onClose={() => setDialog(null)} />}
       {dialog === 'skin' && active && <SkinDialog account={active} onClose={() => setDialog(null)} />}
+      {dialog === 'import' && <ImportDialog initial={found} onClose={() => setDialog(null)} />}
+      {offer && (
+        <ImportOffer
+          list={offer}
+          onClose={() => setOffer(null)}
+          onOpen={() => {
+            setFound(offer)
+            setOffer(null)
+            setDialog('import')
+          }}
+        />
+      )}
     </div>
   )
 }

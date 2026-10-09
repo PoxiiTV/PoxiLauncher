@@ -38,6 +38,7 @@ export const settingsPatch = z
     startWithWindows: z.boolean(),
     lastSeenVersion: z.string().regex(/^\d{1,4}\.\d{1,4}\.\d{1,4}$/),
     langAsked: z.literal(true),
+    importOffered: z.literal(true),
     chatNotify: z.boolean(),
     chatSounds: z.boolean(),
     chatMuted: z.array(z.string().uuid()).max(500),

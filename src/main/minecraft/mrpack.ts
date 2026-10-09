@@ -7,7 +7,7 @@ import { z } from 'zod'
 import type { McContent, McInstance, McLoader } from '@shared/types'
 import { downloadTo } from '../net'
 import { run7z } from '../system/sevenzip'
-import { FOLDERS } from './content'
+import { CONFIG_DIRS, FOLDERS } from './content'
 import { getVersions, primaryFile } from './modrinth'
 
 // Modpacks de Modrinth (.mrpack): importar (crea la instancia y baja cada archivo comprobando su hash), exportar la
@@ -136,9 +136,6 @@ export async function applyPack(dir: string, index: MrIndex, root: string, onPro
     }
   }
 }
-
-// Carpetas de la instancia que van en un modpack (configuración), además de mods, resource packs y shaders
-const CONFIG_DIRS = ['config', 'defaultconfigs', 'kubejs', 'global_packs']
 
 async function zipFolder(folder: string, dest: string): Promise<boolean> {
   const tmp = `${dest}.poxi-tmp`

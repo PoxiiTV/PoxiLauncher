@@ -46,6 +46,8 @@ import {
   exportInstanceServer,
   fixCrash,
   importPackFile,
+  mcImportRun,
+  mcImportScan,
   installModpack,
   mcBackupWorld,
   openServerFolder,
@@ -309,6 +311,9 @@ export const handlers: Impl = {
   'mc:openBackups': (i, w) => mcOpenBackups(mcId.parse(i), mcWorld.parse(w)),
   'mc:importPack': () => importPackFile(),
   'mc:installModpack': (p, v) => installModpack(mrId.parse(p), mrId.optional().parse(v)),
+  'mc:importScan': () => mcImportScan(),
+  // Solo claves de la última búsqueda: el servicio nunca usa rutas que lleguen de la interfaz
+  'mc:importRun': (keys, w) => mcImportRun(z.array(z.string().min(1).max(1000)).min(1).max(200).parse(keys), z.boolean().parse(w)),
   'mc:exportPack': (i) => exportInstancePack(mcId.parse(i)),
   'mc:exportServer': (i) => exportInstanceServer(mcId.parse(i)),
   'mc:fixCrash': (i, n) => fixCrash(mcId.parse(i), z.number().int().min(0).max(20).parse(n)),

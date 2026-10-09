@@ -10,6 +10,8 @@ import { filterEntries, open as openZip, readEntry } from '@xmcl/unzip'
 // Sin Electron ni red: todo lo de Modrinth lo hace quien llama.
 
 export const FOLDERS: Record<McContentKind, string> = { mod: 'mods', resourcepack: 'resourcepacks', shader: 'shaderpacks' }
+/** Carpetas de la instancia que van en un modpack (configuración), además de mods, resource packs y shaders */
+export const CONFIG_DIRS = ['config', 'defaultconfigs', 'kubejs', 'global_packs']
 const EXT: Record<McContentKind, RegExp> = { mod: /\.jar$/i, resourcepack: /\.zip$/i, shader: /\.zip$/i }
 const DISABLED = '.disabled'
 /** Fotos que se guardan por instancia */

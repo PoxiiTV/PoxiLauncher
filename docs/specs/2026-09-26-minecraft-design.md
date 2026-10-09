@@ -6,7 +6,9 @@ Sección nueva dentro de PoxiLauncher para jugar a Minecraft Java con mods de Mo
 
 Ser el mejor launcher de Minecraft Java: todo lo que la gente pide o echa de menos (investigado en GitHub de Prism/Modrinth/XMCL, minecraftforum y comparativas 2025-2026). Modrinth App ya tiene instancias compartidas y "unirse a servidor con mods"; lo que nos diferencia es **jugar juntos de verdad** (unirse a un amigo, alojar sin abrir puertos), **que nada se rompa** (rollback, copias de mundos) y **explicar los crasheos**.
 
-Fuera: CurseForge, importar desde otros launchers, authlib-injector (ely.by), Bedrock.
+Fuera: CurseForge como fuente de mods, authlib-injector (ely.by), Bedrock.
+
+**Traer instancias** (`importers.ts`): del launcher oficial (perfiles de `launcher_profiles.json`), CurseForge (carpeta de `storage.json` → `minecraft-settings.minecraftRoot`), Prism Launcher (`InstanceDir` de su `.cfg`) y Modrinth App (`app.db` leída con `node:sqlite` sobre una copia; las versiones viejas, `profile.json`). Solo se lee su carpeta; se copian mods, resource packs, shaders, configuración, opciones, servidores y (si se pide) mundos a una instancia nueva con `importedFrom` y `shareSettings: false`. Se ofrece una vez (`importOffered`). Pruebas sin empaquetar: `POXI_IMPORT_ROOTS`.
 
 ## Hoja de ruta (aprobada; Poxi prueba al final de todo)
 

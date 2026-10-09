@@ -13,6 +13,8 @@ export interface Settings {
   lastSeenVersion?: string
   /** false solo la primera vez (sin ajustes guardados): la app pregunta el idioma al abrirse */
   langAsked?: boolean
+  /** Ya se ofreció traer las instancias de otros launchers (se ofrece una sola vez) */
+  importOffered?: boolean
   /** Mostrar en Discord que estás en el launcher y a qué instancia juegas */
   discordPresence: boolean
   /** Avisar cuando un amigo empieza a jugar */
@@ -198,6 +200,34 @@ export interface McInstance {
   incomplete?: boolean
   /** Servidor en tu PC a partir de esta instancia */
   server?: McServerConfig
+  /** Traída de otro launcher: de dónde (la `key` de McImportable), para no traerla dos veces sin querer */
+  importedFrom?: string
+}
+
+/** Una instancia de otro launcher que se puede traer */
+export interface McImportable {
+  /** Su origen (launcher, carpeta y perfil) */
+  key: string
+  launcher: 'official' | 'curseforge' | 'prism' | 'modrinth'
+  name: string
+  /** Versión de Minecraft ('' si no se sabe) */
+  version: string
+  loader: McLoader
+  loaderVersion?: string
+  mods: number
+  /** Lo que se copia sin los mundos (bytes) */
+  size: number
+  worlds: number
+  worldsSize: number
+  /**
+   * Perfil del launcher oficial que comparte carpeta con otro usado después: sale sin marcar. `mods`: también
+   * comparte los mods (los dos llevan loader), que serán de la versión del otro
+   */
+  shares?: { name: string; mods: boolean }
+  /** No se puede traer: por qué (clave i18n) */
+  unsupported?: 'mc.import.why.version' | 'mc.import.why.meta'
+  /** Ya traída antes: la instancia */
+  imported?: string
 }
 
 export interface McServerConfig {
@@ -400,7 +430,7 @@ export interface McSkinInfo {
   capes: { id: string; alias: string; url: string; active: boolean }[]
 }
 
-export type McBusyStage = 'game' | 'java' | 'loader' | 'backup' | 'modpack' | 'launching'
+export type McBusyStage = 'game' | 'java' | 'loader' | 'backup' | 'modpack' | 'import' | 'launching'
 
 export interface McState {
   accounts: McAccount[]
@@ -449,3 +479,5 @@ export type McError =
   | 'mc.server.unsupported'
   | 'mc.server.worldLocked'
   | 'mc.server.worldFailed'
+  | 'mc.import.noSpace'
+  | 'mc.import.failed'

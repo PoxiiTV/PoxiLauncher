@@ -597,6 +597,7 @@ const es = {
       loader: 'Instalando el loader…',
       backup: 'Copiando tus mundos…',
       modpack: 'Descargando el modpack…',
+      import: 'Copiando la instancia…',
       launching: 'Abriendo el juego…'
     },
     menu: {
@@ -884,6 +885,58 @@ const es = {
       text: 'Se crea otra instancia igual, con sus mods y su configuración.',
       worlds: 'Copiar también los mundos',
       confirm: 'Duplicar'
+    },
+    import: {
+      button: 'Importar',
+      title: 'Trae tus instancias',
+      intro: 'Copiamos tus instancias de otros launchers con sus mods, su configuración, tus opciones y tus servidores. Los originales se quedan como están.',
+      accounts: 'Tus cuentas de Microsoft no se traen: aquí inicias sesión aparte.',
+      searching: 'Buscando instancias en este PC…',
+      emptyTitle: 'No hay nada que traer',
+      empty: 'No hemos encontrado instancias del launcher oficial, CurseForge, Prism Launcher ni Modrinth App en este PC.',
+      launchers: {
+        official: 'Launcher oficial',
+        curseforge: 'CurseForge',
+        prism: 'Prism Launcher',
+        modrinth: 'Modrinth App'
+      },
+      where: {
+        official: 'en el launcher oficial',
+        curseforge: 'en CurseForge',
+        prism: 'en Prism Launcher',
+        modrinth: 'en Modrinth App'
+      },
+      mods: '{n} mods',
+      modsOne: '1 mod',
+      worldsN: '{n} mundos',
+      worldsOne: '1 mundo',
+      imported: 'Ya importada',
+      worlds: 'Copiar también los mundos ({size})',
+      worldsPlain: 'Copiar también los mundos',
+      total: 'Se copian {size}',
+      go: 'Importar ({n})',
+      sharesAll: 'Comparte mods y mundos con «{name}», jugada después',
+      sharesWorlds: 'Comparte mundos con «{name}», jugada después',
+      disabled: '{n} mods desactivados: no son para {loader} {mc}. Puedes cambiarlos de versión en la instancia',
+      disabledOne: '1 mod desactivado: no es para {loader} {mc}. Puedes cambiarlo de versión en la instancia',
+      queued: 'En cola',
+      done: 'Importada',
+      doneMany: '{n} instancias importadas',
+      doneOne: 'Instancia importada: {name}',
+      noSpace: 'No queda sitio en el disco para copiarla. Libera espacio y vuelve a intentarlo.',
+      failed: 'No se ha podido copiar. No se ha guardado nada a medias.',
+      why: {
+        version: 'PoxiLauncher no sabe instalar esta versión (OptiFine, versiones hechas a mano…)',
+        meta: 'No se ha podido leer su versión ni su loader'
+      },
+      offer: {
+        title: '¿Te traes tus instancias?',
+        text: 'Hemos encontrado {list}. Las copiamos aquí con sus mods y sus mundos, y los originales se quedan como están.',
+        count: '{n} instancias {where}',
+        countOne: '1 instancia {where}',
+        later: 'Ahora no',
+        see: 'Ver instancias'
+      }
     },
     modpacks: {
       tab: 'Modpacks',

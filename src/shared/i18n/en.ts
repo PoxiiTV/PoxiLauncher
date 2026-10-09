@@ -599,6 +599,7 @@ const en: Dict = {
       loader: 'Installing the loader…',
       backup: 'Backing up your worlds…',
       modpack: 'Downloading the modpack…',
+      import: 'Copying the instance…',
       launching: 'Opening the game…'
     },
     menu: {
@@ -886,6 +887,58 @@ const en: Dict = {
       text: 'Another identical instance is created, with its mods and settings.',
       worlds: 'Also copy the worlds',
       confirm: 'Duplicate'
+    },
+    import: {
+      button: 'Import',
+      title: 'Bring your instances',
+      intro: 'We copy your instances from other launchers with their mods, their config, your options and your servers. The originals stay as they are.',
+      accounts: "Your Microsoft accounts aren't brought over: you sign in here separately.",
+      searching: 'Looking for instances on this PC…',
+      emptyTitle: 'Nothing to bring over',
+      empty: "We didn't find any instances from the official launcher, CurseForge, Prism Launcher or Modrinth App on this PC.",
+      launchers: {
+        official: 'Official launcher',
+        curseforge: 'CurseForge',
+        prism: 'Prism Launcher',
+        modrinth: 'Modrinth App'
+      },
+      where: {
+        official: 'in the official launcher',
+        curseforge: 'in CurseForge',
+        prism: 'in Prism Launcher',
+        modrinth: 'in Modrinth App'
+      },
+      mods: '{n} mods',
+      modsOne: '1 mod',
+      worldsN: '{n} worlds',
+      worldsOne: '1 world',
+      imported: 'Already imported',
+      worlds: 'Also copy the worlds ({size})',
+      worldsPlain: 'Also copy the worlds',
+      total: '{size} will be copied',
+      go: 'Import ({n})',
+      sharesAll: 'Shares mods and worlds with "{name}", played later',
+      sharesWorlds: 'Shares worlds with "{name}", played later',
+      disabled: "{n} mods turned off: they aren't for {loader} {mc}. You can change their version in the instance",
+      disabledOne: "1 mod turned off: it isn't for {loader} {mc}. You can change its version in the instance",
+      queued: 'Queued',
+      done: 'Imported',
+      doneMany: '{n} instances imported',
+      doneOne: 'Instance imported: {name}',
+      noSpace: "There's no room left on the disk to copy it. Free up some space and try again.",
+      failed: "It couldn't be copied. Nothing half-done was kept.",
+      why: {
+        version: "PoxiLauncher can't install this version (OptiFine, hand-made versions…)",
+        meta: "Its version and loader couldn't be read"
+      },
+      offer: {
+        title: 'Bring your instances over?',
+        text: 'We found {list}. We copy them here with their mods and worlds, and the originals stay as they are.',
+        count: '{n} instances {where}',
+        countOne: '1 instance {where}',
+        later: 'Not now',
+        see: 'See instances'
+      }
     },
     modpacks: {
       tab: 'Modpacks',

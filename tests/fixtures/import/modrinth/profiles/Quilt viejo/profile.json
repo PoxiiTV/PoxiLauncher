@@ -1,0 +1,11 @@
+{
+  "path": "Quilt viejo",
+  "metadata": {
+    "name": "Quilt viejo",
+    "game_version": "1.20.4",
+    "loader": "quilt",
+    "loader_version": {
+      "id": "0.26.0"
+    }
+  }
+}

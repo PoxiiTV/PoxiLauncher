@@ -1,0 +1,9 @@
+﻿{
+  "name": "Pack NeoForge",
+  "gameVersion": "1.21.1",
+  "baseModLoader": {
+    "name": "neoforge-21.1.244",
+    "forgeVersion": "21.1.244"
+  },
+  "installedAddons": []
+}

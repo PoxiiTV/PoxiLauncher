@@ -1,4 +1,5 @@
 import type { T } from '../i18n'
+import { getState } from '../store'
 
 export function formatBytes(n: number): string {
   if (!n) return '—'
@@ -8,7 +9,9 @@ export function formatBytes(n: number): string {
     n /= 1024
     i++
   }
-  return `${n.toFixed(n >= 100 || i < 2 ? 0 : 1)} ${u[i]}`
+  // Con el idioma de la app, no el de Windows: «2,9 GB» en español, «2.9 GB» en inglés
+  const d = n >= 100 || i < 2 ? 0 : 1
+  return `${n.toLocaleString(getState().settings?.lang ?? 'es', { minimumFractionDigits: d, maximumFractionDigits: d })} ${u[i]}`
 }
 
 /** 9261 → "9.261" (en español los números de 4 cifras no llevan punto por defecto) */
